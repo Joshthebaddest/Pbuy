@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: php-mvc-app
+    env: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_HOST
+        fromService:
+          name: mysql-db
+          type: pserv
+      - key: DB_NAME
+        value: pbuyDB
+      - key: DB_USER
+        value: josiah
+      - key: DB_PASSWORD
+        value: kS9cX3jF4z1LpA8Q
+
+databases:
+  - name: mysql-db
+    databaseName: pbuyDB
+    user: josiah
