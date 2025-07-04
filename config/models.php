@@ -168,26 +168,19 @@
         // ---------------- CRUD ----------------
 
         public static function create($data) {
-            if (static::$timestamps) {
-                $data['created_at'] = date('Y-m-d H:i:s');
-                $data['updated_at'] = date('Y-m-d H:i:s');
-            }
-
+            
             static::validate($data);
 
             return static::insert(static::$table, $data);
         }
 
         public static function update($criteria, $newData) {
-            if (static::$timestamps) {
-                $newData['updated_at'] = date('Y-m-d H:i:s');
-            }
         
             // Assuming 'id' is the primary key, you can customize this if needed
             $exclude = isset($criteria['id']) ? ['field' => 'id', 'value' => $criteria['id']] : null;
 
             static::validate($newData, false, $exclude);
-
+            echo('here');
             return static::performUpdate(static::$table, $criteria, $newData);
         }
         

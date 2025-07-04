@@ -3,7 +3,7 @@
     include_once __DIR__ . '/../../config/globalConfig.php';
     require_once($dir . '/../data.php');
     require($dir . '/fileUploadController.php');
-    $product_name = $product_size = $quantity = $descriptions = $price = "";
+    $product_name = $product_size = $quantity = $descriptions = $price = $category_id =  "";
     $images = [
         'img_url_0' => '',
         'img_url_1' => '',
@@ -100,7 +100,6 @@
             try{
                 $img_url = $images[0];
                 if ($type === "add") {
-                    exit();
                     $products = Product::create([
                         'product_name' => $product_name,
                         'img_url' => $img_url,
@@ -137,6 +136,10 @@
                 }
 
                 header('Location: '. BASE_PATH .'dashboard/products');
+                $_SESSION['toast'] = [
+                    'message' => 'Product '. ($type === 'add' ? 'created': 'updated') .' Successfully!',
+                    'type' => 'success' // success | error | info
+                ];
                 exit();
             }catch(Exception $e){
                 echo $e -> getMessage();

@@ -34,6 +34,7 @@
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
         <link rel="stylesheet" href="<?= BASE_PATH ?>css/style.css">
+
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
         <!-- <link rel="stylesheet" href="/css/style.css"> -->
@@ -42,6 +43,7 @@
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        
 
         <style>
             /* For multiline truncation */

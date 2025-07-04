@@ -394,7 +394,7 @@ $vendors = [
             class="flex-1 bg-white text-gray-900 p-2 rounded-lg"
             required
           />
-          <button type="submit" disabled="false" class="bg-white rounded-lg p-2 px-3 bg-blue-600 text-white hover:text-black hover:bg-gray-100">
+          <button type="submit" disabled="false" class="rounded-lg p-2 px-3 bg-black text-white hover:text-black hover:bg-gray-100">
             Subscribe
           </button>
         </form>
