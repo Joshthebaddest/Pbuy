@@ -4,19 +4,6 @@
     class Category extends Model {
         protected static $table = 'categories';
 
-        protected static $rules = [
-            'name' => 'string|required',
-            'url' => 'string|required',
-            'slug' => 'date|required',
-        ];
-    }
-?>
-<?php 
-    require_once __DIR__ .'/../../config/models.php';
-
-    class Category extends Model {
-        protected static $table = 'categories';
-
         protected static $schema = [
             'id' => ['type' => 'INT', 'auto_increment' => true, 'primary' => true],
             'name' => ['type' => 'VARCHAR(100)', 'required' => true, 'unique' => true],
