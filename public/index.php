@@ -9,6 +9,7 @@ $routes = [
     'home'                     => ['view' => '/../app/pages/web/home.php'],
     'cart'                     => ['view' => '/../app/pages/web/cart.php'],
     'search'                     => ['view' => '/../app/pages/web/search&filter.php'],
+    'vendor/reg'                     => ['view' => '/../app/pages/web/vendorRegistration.php'],
     'dummy'                    => ['view' => '/../app/controllers/getDummyProducts.php'],
     'products'                 => ['view' => '/../app/pages/web/products.php'],
     'products/:productId'       => ['view' => '/../app/pages/web/productDetails.php'],

@@ -3,7 +3,7 @@
   $dir = realpath(__DIR__);
   $vendorId = htmlspecialchars($_GET['vendorId']);
   include($dir.'/../../models/users.php');
-  include($dir.'/../../models/products.php');
+  include($dir.'/../../models/product/products.php');
   $role = 'vendor';
   $products = [];
   $vendor = [];
