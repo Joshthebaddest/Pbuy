@@ -1,9 +1,10 @@
 <?php
-// public/index.php
+    // public/index.php
+    require_once __DIR__ . '/migrate.php';
 
-$url = trim($_GET['url'] ?? '', '/');
+    $url = trim($_GET['url'] ?? '', '/');
 
-// Define route-to-file map with support for dynamic parameters
+    // Define route-to-file map with support for dynamic parameters
 $routes = [
     ''                         => ['view' => '/../app/pages/web/home.php'],
     'home'                     => ['view' => '/../app/pages/web/home.php'],
@@ -31,49 +32,48 @@ $routes = [
     'dashboard/recommendations'       => ['view' => '/../app/pages/dashboard/settings.php', 'protected' => true],
 ];
 
-// Try to match route (static or dynamic)
-$routeMatched = false;
-// require_once __DIR__ . '../config/dbConfig.php';
+    // Try to match route (static or dynamic)
+    $routeMatched = false;
+    // require_once __DIR__ . '../config/dbConfig.php';
 
-foreach ($routes as $routePattern => $routeConfig) {
-    // Convert route pattern to regex
-    $regexPattern = preg_replace('#:([\w]+)#', '(?P<\1>[^/]+)', $routePattern);
-    $regexPattern = '#^' . $regexPattern . '$#';
+    foreach ($routes as $routePattern => $routeConfig) {
+        // Convert route pattern to regex
+        $regexPattern = preg_replace('#:([\w]+)#', '(?P<\1>[^/]+)', $routePattern);
+        $regexPattern = '#^' . $regexPattern . '$#';
 
-    if (preg_match($regexPattern, $url, $matches)) {
-        $routeMatched = true;
+        if (preg_match($regexPattern, $url, $matches)) {
+            $routeMatched = true;
 
-        require_once __DIR__ . '/../config/sessionConfig.php';
+            require_once __DIR__ . '/../config/sessionConfig.php';
 
-        // Extract dynamic params
-        $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
-   
-        foreach ($params as $key => $value) {
-            $_GET[$key] = $value; // Add to $_GET for convenience
-        }
+            // Extract dynamic params
+            $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+            foreach ($params as $key => $value) {
+                $_GET[$key] = $value; // Add to $_GET for convenience
+            }
 
-        $currentUserRole = null;
+            $currentUserRole = null;
 
-        // Check for protected routes
-        if (!empty($routeConfig['protected'])) {
-            require_once __DIR__ . '/../app/middleware/protected.php';
-            $currentUserRole = $_SESSION['role'];
-        }
+            // Check for protected routes
+            if (!empty($routeConfig['protected'])) {
+                require_once __DIR__ . '/../app/middleware/protected.php';
+                $currentUserRole = $_SESSION['role'];
+            }
 
-        // Check role access if 'roles' are defined
-        if (isset($routeConfig['roles']) && !in_array($currentUserRole, $routeConfig['roles'])) {
-            require_once __DIR__ . '/404.html';
+            // Check role access if 'roles' are defined
+            if (isset($routeConfig['roles']) && !in_array($currentUserRole, $routeConfig['roles'])) {
+                require_once __DIR__ . '/404.html';
+                break;
+            }
+
+
+            // Load the view/controller
+            require_once __DIR__ . $routeConfig['view'];
             break;
         }
-
-
-        // Load the view/controller
-        require_once __DIR__ . $routeConfig['view'];
-        break;
     }
-}
 
-// If no route matched, load 404 page
-if (!$routeMatched) {
-    require_once __DIR__ . '/404.html';
-}
+    // If no route matched, load 404 page
+    if (!$routeMatched) {
+        require_once __DIR__ . '/404.html';
+    }

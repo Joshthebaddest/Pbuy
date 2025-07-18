@@ -45,6 +45,7 @@
 
         $users = sortArrayOfAssociativeArrays($users, $sort, $order);
     }
+    echo($_SESSION["role"]);
 ?>
 
 <div>

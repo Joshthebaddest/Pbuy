@@ -38,6 +38,10 @@
 
                             // redirect to homepage
                             header("Location: " .BASE_PATH ."dashboard");
+                            $_SESSION['toast'] = [
+                                'message' => 'Login Successful!',
+                                'type' => 'success' // success | error | info
+                            ];
                             exit();
                         }else{
                             $errors['error'] = 'invalid credentials';
@@ -50,13 +54,17 @@
 
                         User::update(['email' => $email], ['email_verification_token' => $tokenHash, 'email_verification_expires' => $expires_at]);
                         header('Location: '. BASE_PATH .'auth/verify-email?token='. urlencode($rawToken));
+                        $_SESSION['toast'] = [
+                            'message' => 'Email Verification Sent!',
+                            'type' => 'success' // success | error | info
+                        ];
                         exit();
                     }
                 }
                 $errors['error'] = 'invalid credentials';
                 $_SESSION['toast'] = [
                     'message' => 'invalid credentials!',
-                    'type' => 'success' // success | error | info
+                    'type' => 'error' // success | error | info
                 ];
             }catch(Exception $e){
                 echo $e->getMessage();

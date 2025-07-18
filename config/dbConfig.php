@@ -9,7 +9,7 @@
         public function __construct() {
             $host = $_SERVER['HTTP_HOST'] ?? 'cli';
 
-            if ($host === 'localhost') {
+            if ($host === 'localhost' || $host === 'localhost:8080') {
                 // Development (local)
                 $this->host = 'localhost';
                 $this->db_name = 'myDB';

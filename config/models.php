@@ -1,18 +1,91 @@
 <?php
-require_once __DIR__ . '/dbConfig.php';
+    require_once __DIR__ . '/dbConfig.php';
 
     abstract class Model {
         protected static $table = '';
-        protected static $rules = []; // e.g., ['name' => 'string|required']
+        protected static $rules = [];
+        protected static $schema = [];
         protected static $timestamps = true;
 
-        protected static function validate($data, $strict = false) {
+        // ---------------- Schema Cache ----------------
+
+        protected static function getSchemaCachePath() {
+            return __DIR__ . '/.schema.cache.json';
+        }
+
+        protected static function loadSchemaCache() {
+            $path = static::getSchemaCachePath();
+            if (!file_exists($path)) return [];
+            return json_decode(file_get_contents($path), true) ?: [];
+        }
+
+        protected static function saveSchemaCache($cache) {
+            file_put_contents(static::getSchemaCachePath(), json_encode($cache, JSON_PRETTY_PRINT));
+        }
+
+        public static function init() {
+            $db = new Database();
+            $conn = $db->connect();
+
+            $table = static::$table;
+            $schema = static::$schema;
+            $cache = static::loadSchemaCache();
+            $schemaHash = md5(json_encode($schema));
+
+            // Skip if already initialized
+            if (isset($cache[$table]) && $cache[$table]['hash'] === $schemaHash) {
+                $conn->close();
+                return;
+            }
+
+            $result = $conn->query("SHOW TABLES LIKE '$table'");
+            if ($result->num_rows === 0) {
+                $columns = [];
+                foreach ($schema as $name => $props) {
+                    $col = "`$name` {$props['type']}";
+                    if (!empty($props['auto_increment'])) $col .= " AUTO_INCREMENT";
+                    if (!empty($props['required']) || !empty($props['primary'])) $col .= " NOT NULL";
+                    if (isset($props['default'])) $col .= " DEFAULT {$props['default']}";
+                    $columns[] = $col;
+                }
+
+                foreach ($schema as $name => $props) {
+                    if (!empty($props['primary'])) $columns[] = "PRIMARY KEY (`$name`)";
+                    if (!empty($props['unique'])) $columns[] = "UNIQUE KEY `unique_$name` (`$name`)";
+                }
+
+                $sql = "CREATE TABLE `$table` (" . implode(", ", $columns) . ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+                if (!$conn->query($sql)) throw new Exception("Table creation failed: " . $conn->error);
+            } else {
+                $existingColsRes = $conn->query("SHOW COLUMNS FROM `$table`");
+                $existingCols = [];
+                while ($row = $existingColsRes->fetch_assoc()) {
+                    $existingCols[$row['Field']] = $row;
+                }
+
+                foreach ($schema as $name => $props) {
+                    if (!isset($existingCols[$name])) {
+                        $col = "`$name` {$props['type']}";
+                        if (!empty($props['required'])) $col .= " NOT NULL";
+                        if (isset($props['default'])) $col .= " DEFAULT {$props['default']}";
+                        $conn->query("ALTER TABLE `$table` ADD COLUMN $col");
+                    }
+                }
+            }
+
+            $conn->close();
+
+            $cache[$table] = ['hash' => $schemaHash, 'updated_at' => date('c')];
+            static::saveSchemaCache($cache);
+        }
+
+        // ---------------- Validation ----------------
+
+        protected static function validate($data, $strict = false, $exclude = null) {
             $errors = [];
 
             foreach (static::$rules as $field => $rules) {
-                if (!$strict && !array_key_exists($field, $data)) {
-                    continue;
-                }
+                if (!$strict && !array_key_exists($field, $data)) continue;
 
                 $rulesArr = explode('|', $rules);
                 $value = $data[$field] ?? null;
@@ -34,7 +107,6 @@ require_once __DIR__ . '/dbConfig.php';
                         $errors[] = "$field must be a valid date in YYYY-MM-DD or YYYY-MM-DD HH:MM:SS format.";
                     }
 
-
                     if (str_starts_with($rule, 'min:') && is_numeric($value)) {
                         $min = (int)explode(':', $rule)[1];
                         if ($value < $min) $errors[] = "$field must be at least $min.";
@@ -47,9 +119,7 @@ require_once __DIR__ . '/dbConfig.php';
 
                     if (str_starts_with($rule, 'regex:')) {
                         $pattern = substr($rule, 6);
-                        if (!preg_match($pattern, $value)) {
-                            $errors[] = "$field format is invalid.";
-                        }
+                        if (!preg_match($pattern, $value)) $errors[] = "$field format is invalid.";
                     }
 
                     if (str_starts_with($rule, 'enum:')) {
@@ -61,18 +131,31 @@ require_once __DIR__ . '/dbConfig.php';
 
                     if (str_starts_with($rule, 'unique:')) {
                         [$__, $table, $column] = explode(':', str_replace(',', ':', $rule));
+        
                         $db = new Database();
-                        $conn = $db -> connect();
-                        $stmt = $conn->prepare("SELECT COUNT(*) as count FROM $table WHERE $column = ?");
-                        $stmt->bind_param('s', $value);
+                        $conn = $db->connect();
+        
+                        $sql = "SELECT COUNT(*) as count FROM $table WHERE $column = ?";
+                        $params = [$value];
+                        $types = 's';
+        
+                        // Exclude current record if $exclude is given
+                        if ($exclude && isset($exclude['field']) && isset($exclude['value'])) {
+                            $sql .= " AND {$exclude['field']} != ?";
+                            $params[] = $exclude['value'];
+                            $types .= 's';
+                        }
+        
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param($types, ...$params);
                         $stmt->execute();
                         $result = $stmt->get_result()->fetch_assoc();
                         $stmt->close();
                         $conn->close();
-
+                        
                         if ($result['count'] > 0) {
                             $errors[] = "$field must be unique.";
-                        }
+                        }                
                     }
                 }
             }
@@ -82,26 +165,25 @@ require_once __DIR__ . '/dbConfig.php';
             }
         }
 
-        public static function create($data) {
-            if (static::$timestamps) {
-                $data['created_at'] = date('Y-m-d H:i:s');
-                $data['updated_at'] = date('Y-m-d H:i:s');
-            }
+        // ---------------- CRUD ----------------
 
+        public static function create($data) {
+            
             static::validate($data);
 
             return static::insert(static::$table, $data);
         }
 
         public static function update($criteria, $newData) {
-            if (static::$timestamps) {
-                $newData['updated_at'] = date('Y-m-d H:i:s');
-            }
+        
+            // Assuming 'id' is the primary key, you can customize this if needed
+            $exclude = isset($criteria['id']) ? ['field' => 'id', 'value' => $criteria['id']] : null;
 
-            static::validate($newData);
-
+            static::validate($newData, false, $exclude);
+            echo('here');
             return static::performUpdate(static::$table, $criteria, $newData);
         }
+        
 
         public static function find($criteria = []) {
             return static::performFind(static::$table, $criteria);
@@ -116,10 +198,11 @@ require_once __DIR__ . '/dbConfig.php';
             return static::performDelete(static::$table, $criteria);
         }
 
-        // --- Internals for reusability ---
+        // ---------------- Internals ----------------
+
         protected static function insert($table, $data) {
             $db = new Database();
-            $conn = $db -> connect();
+            $conn = $db->connect();
             $columns = implode(", ", array_keys($data));
             $placeholders = implode(", ", array_fill(0, count($data), '?'));
 
@@ -139,7 +222,7 @@ require_once __DIR__ . '/dbConfig.php';
 
         protected static function performUpdate($table, $criteria, $newData) {
             $db = new Database();
-            $conn = $db -> connect();
+            $conn = $db->connect();
             $set = implode(", ", array_map(fn($k) => "$k = ?", array_keys($newData)));
             $where = implode(" AND ", array_map(fn($k) => "$k = ?", array_keys($criteria)));
 
@@ -160,7 +243,7 @@ require_once __DIR__ . '/dbConfig.php';
 
         protected static function performFind($table, $criteria = []) {
             $db = new Database();
-            $conn = $db -> connect();
+            $conn = $db->connect();
             $sql = "SELECT * FROM $table";
 
             if (!empty($criteria)) {
@@ -178,8 +261,8 @@ require_once __DIR__ . '/dbConfig.php';
 
             $stmt->execute();
             $result = $stmt->get_result();
-
             $rows = [];
+
             while ($row = $result->fetch_assoc()) {
                 $rows[] = $row;
             }
@@ -192,7 +275,7 @@ require_once __DIR__ . '/dbConfig.php';
 
         protected static function performDelete($table, $criteria) {
             $db = new Database();
-            $conn = $db -> connect();
+            $conn = $db->connect();
             $where = implode(" AND ", array_map(fn($k) => "$k = ?", array_keys($criteria)));
 
             $sql = "DELETE FROM $table WHERE $where";
@@ -209,10 +292,9 @@ require_once __DIR__ . '/dbConfig.php';
             return $result;
         }
 
-        public static function query() {
+        public static function query() {       
             return new QueryBuilder(static::$table);
         }
-
     }
 
     class QueryBuilder {
@@ -326,7 +408,6 @@ require_once __DIR__ . '/dbConfig.php';
             // Pagination
             $offset = ($this->page - 1) * $this->pageSize;
             $sql .= " LIMIT $offset, $this->pageSize";
-
             $stmt = $conn->prepare($sql);
             if (!$stmt) die("Prepare failed: " . $conn->error);
 
@@ -337,6 +418,7 @@ require_once __DIR__ . '/dbConfig.php';
 
             $stmt->execute();
             $result = $stmt->get_result();
+
             $data = $result->fetch_all(MYSQLI_ASSOC);
             $stmt->close();
 

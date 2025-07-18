@@ -129,12 +129,12 @@ class CartManager {
     }
 
     protected function addToDatabase($productId, $quantity) {
-        require_once __DIR__ . '/../app/models/carts.php';
+        require_once __DIR__ . '/../models/carts.php';
         try{
             // Check if product exists in DB cart
             $row = Cart::query()
                 ->select('quantity')
-                ->where('user_id', $userId)
+                ->where('user_id', $this -> userId)
                 ->where('product_id', $productId)
                 ->first();
             if (!empty($row)) {
@@ -149,21 +149,26 @@ class CartManager {
     }
 
     protected function getFromDatabase() {
-        require_once __DIR__ . '/../app/models/carts.php';
+        require_once __DIR__ . '/../models/carts.php';
         try{
-            foreach ($_SESSION['cart'] as $productId => $quantity) {
-                // Check if product exists in DB cart
-                $data = $this -> getCartId();
-                $cart = [];
-                if(!empty($data)){
-                    $row = CartItem::query()
-                        ->select('product_id', 'quantity')
-                        ->where('cart_id', $data['id'])
-                        ->get();
-                    if(!empty($row)){
-                        $cart[$row['product_id']] = $row['quantity'];
+            if(isset($_SESSION['cart'])){
+                foreach ($_SESSION['cart'] as $productId => $quantity) {
+                    // Check if product exists in DB cart
+                    $data = $this -> getCartId();
+                    $cart = [];
+                    if(!empty($data)){
+                        $row = CartItem::query()
+                            ->select('product_id', 'quantity')
+                            ->where('cart_id', $data['id'])
+                            ->get();
+                        if(!empty($row)){
+                            $cart[$row['product_id']] = $row['quantity'];
+                        }
                     }
+                    return $cart;
                 }
+            }else{
+                $cart = [];
                 return $cart;
             }
         }catch(Exception $e){

@@ -1,23 +1,25 @@
 <?php   
-    include __DIR__ . '/../../models/users.php';
-    $user =  $_SESSION['user'] ?? null;
+    require_once __DIR__ . '/../../models/users.php';
+    $user = $_SESSION['user'] ?? null;
 
-    $sql = "SELECT * FROM $users_table WHERE username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $user);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    try{
+        $row = User::query()
+            ->select('*')
+            ->where('username', $user)
+            ->first();
 
-    $userId = $row['id'];
-    $firstname = $row['firstname'];
-    $lastname = $row['lastname'];
-    $username = $row['username'];
-    $email = $row['email'];
-    $country = $row['country'];
-    $gender = $row['gender'];
-    $dateOfBirth = $row['date_of_birth'];
-    $role = $row['role'];
+        $userId = $row['id'];
+        $firstname = $row['firstname'];
+        $lastname = $row['lastname'];
+        $username = $row['username'];
+        $email = $row['email'];
+        $country = $row['country'];
+        $gender = $row['gender'];
+        $dateOfBirth = $row['date_of_birth'];
+        $role = $row['role'];
+    }catch(Exception $e){
+        echo $e -> getMessage();
+    }
 ?>
 
 <div>
