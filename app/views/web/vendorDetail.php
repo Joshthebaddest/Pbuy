@@ -60,77 +60,181 @@
     }
   };
 
-  if(!isset($vendor)) {
-    require_once __DIR__ . '/../../../public/404.html';
-    exit();
-  }
+  // if(!isset($vendor)) {
+  //   require_once __DIR__ . '/../../../public/404.html';
+  //   exit();
+  // }
 ?>
-<div class="p-10"> 
-  <?php include_once __DIR__ . '/components/breadcrumb.php' ?>
-</div>
+<!-- Breadcrumb -->
+<nav class="bg-gray-50 py-3">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center space-x-2 text-sm">
+      <a href="index.html" class="text-gray-600 hover:text-primary">Home</a>
+      <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+      <a href="#" class="text-gray-600 hover:text-primary">Vendors</a>
+      <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+      <span class="text-gray-900">John's Electronics</span>
+    </div>
+  </div>
+</nav>
 
-<div class="container mx-auto px-4 py-8">
-  <!-- Vendor Header -->
-  <div class="mb-8 border rounded-lg shadow-sm bg-white">
-    <div class="p-8">
-      <div class="flex flex-col md:flex-row items-start md:items-center space-y-6 md:space-y-0 md:space-x-8">
-        <!-- Vendor Logo -->
-        <img 
-          src="<?= $vendor['logo'] ?? '/placeholder.svg' ?>" 
-          alt="<?= htmlspecialchars($vendor['name']) ?>" 
-          width="120" height="120" 
-          class="rounded-full border object-cover"
-        />
-
-        <div class="flex-1">
-          <!-- Vendor Name & Verified -->
-          <div class="flex items-center space-x-3 mb-2">
-            <h1 class="text-3xl font-bold"><?= htmlspecialchars($vendor['name']) ?></h1>
-            <?php if (!empty($vendor['verified'])): ?>
-              <i data-lucide="check-circle" class="h-6 w-6 text-blue-600"></i>
-            <?php endif; ?>
-          </div>
-
-          <!-- Vendor Description -->
-          <p class="text-gray-600 mb-4"><?= htmlspecialchars($vendor['description']) ?></p>
-
-          <!-- Vendor Meta -->
-          <div class="flex flex-wrap items-center gap-4 text-sm text-gray-700">
+<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+  <div id="storefront-page" class="page-content">
+    <!-- Store Header -->
+    <div class="bg-gradient-to-r from-primary to-orange-400 rounded-lg p-8 mb-8 text-white">
+      <div class="flex items-center space-x-6">
+        <img class="h-20 w-20 rounded-full border-4 border-white" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=2" alt="Store Logo">
+        <div>
+          <h1 class="text-3xl font-bold">John's Electronics</h1>
+          <p class="text-orange-100 mt-2">Premium electronics and gadgets for tech enthusiasts</p>
+          <div class="flex items-center mt-3 space-x-4">
             <div class="flex items-center">
-              <i data-lucide="map-pin" class="h-4 w-4 mr-1 text-gray-500"></i>
-              <?= htmlspecialchars($vendor['location']) ?>
+              <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+              <span class="ml-1">4.8 (124 reviews)</span>
             </div>
             <div class="flex items-center">
-              <i data-lucide="calendar" class="h-4 w-4 mr-1 text-gray-500"></i>
-              Joined <?= date("F j, Y", strtotime($vendor['joinedDate'])) ?>
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+              <span class="ml-1">New York, NY</span>
             </div>
-            <div class="flex items-center">
-              <i data-lucide="star" class="h-4 w-4 mr-1 text-yellow-400 fill-yellow-400"></i>
-              <?= number_format($vendor['rating'], 1) ?> (<?= $vendor['reviews'] ?> reviews)
-            </div>
-            <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
-              <?= $vendor['productCount'] ?> products
-            </span>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Products Section -->
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-6">Products from <?= htmlspecialchars($vendor['name']) ?></h2>
+    <!-- Store Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i data-lucide="package" class="w-8 h-8 text-primary mx-auto mb-2"></i>
+        <p class="text-2xl font-bold text-gray-900">24</p>
+        <p class="text-sm text-gray-500">Products</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i data-lucide="users" class="w-8 h-8 text-accent mx-auto mb-2"></i>
+        <p class="text-2xl font-bold text-gray-900">1.2k</p>
+        <p class="text-sm text-gray-500">Followers</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i data-lucide="shopping-bag" class="w-8 h-8 text-blue-500 mx-auto mb-2"></i>
+        <p class="text-2xl font-bold text-gray-900">156</p>
+        <p class="text-sm text-gray-500">Sales</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 text-center">
+        <i data-lucide="calendar" class="w-8 h-8 text-purple-500 mx-auto mb-2"></i>
+        <p class="text-2xl font-bold text-gray-900">2019</p>
+        <p class="text-sm text-gray-500">Since</p>
+      </div>
+    </div>
 
-    <?php if (!empty($products)): ?>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <?php foreach ($products as $product): ?>
-          <?php include __DIR__ . '/components/products-grid.php' ?>
-        <?php endforeach; ?>
+    <!-- Products Grid -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Our Products</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+          <img class="w-full h-48 object-cover" src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=2" alt="iPhone 13 Pro">
+          <div class="p-4">
+            <h3 class="font-medium text-gray-900">iPhone 13 Pro</h3>
+            <p class="text-sm text-gray-500 mt-1">Latest Apple smartphone</p>
+            <div class="flex items-center justify-between mt-3">
+              <span class="text-lg font-bold text-primary">$999</span>
+              <div class="flex items-center">
+                <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                <span class="text-sm text-gray-500 ml-1">4.9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+          <img class="w-full h-48 object-cover" src="https://images.pexels.com/photos/205421/pexels-photo-205421.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=2" alt="MacBook Air">
+          <div class="p-4">
+            <h3 class="font-medium text-gray-900">MacBook Air</h3>
+            <p class="text-sm text-gray-500 mt-1">Lightweight laptop</p>
+            <div class="flex items-center justify-between mt-3">
+              <span class="text-lg font-bold text-primary">$1,299</span>
+              <div class="flex items-center">
+                <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                <span class="text-sm text-gray-500 ml-1">4.7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+          <img class="w-full h-48 object-cover" src="https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=2" alt="AirPods Pro">
+          <div class="p-4">
+            <h3 class="font-medium text-gray-900">AirPods Pro</h3>
+            <p class="text-sm text-gray-500 mt-1">Wireless earbuds</p>
+            <div class="flex items-center justify-between mt-3">
+              <span class="text-lg font-bold text-primary">$249</span>
+              <div class="flex items-center">
+                <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                <span class="text-sm text-gray-500 ml-1">4.8</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow">
+          <img class="w-full h-48 object-cover" src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&dpr=2" alt="iPad Pro">
+          <div class="p-4">
+            <h3 class="font-medium text-gray-900">iPad Pro</h3>
+            <p class="text-sm text-gray-500 mt-1">Professional tablet</p>
+            <div class="flex items-center justify-between mt-3">
+              <span class="text-lg font-bold text-primary">$799</span>
+              <div class="flex items-center">
+                <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                <span class="text-sm text-gray-500 ml-1">4.6</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <?php else: ?>
-      <div class="border rounded-lg p-12 text-center bg-white shadow-sm">
-        <p class="text-gray-500">No products available from this vendor yet.</p>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-6">Customer Reviews</h3>
+      <div class="space-y-6">
+        <div class="border-b border-gray-200 pb-6">
+          <div class="flex items-start space-x-4">
+            <img class="h-10 w-10 rounded-full" src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2" alt="Customer">
+            <div class="flex-1">
+              <div class="flex items-center space-x-2">
+                <h4 class="font-medium text-gray-900">Sarah Johnson</h4>
+                <div class="flex items-center">
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                </div>
+              </div>
+              <p class="text-gray-600 mt-2">Excellent service and fast shipping! The iPhone arrived in perfect condition and exactly as described. Highly recommend this seller.</p>
+              <p class="text-sm text-gray-500 mt-2">March 12, 2024</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-b border-gray-200 pb-6">
+          <div class="flex items-start space-x-4">
+            <img class="h-10 w-10 rounded-full" src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2" alt="Customer">
+            <div class="flex-1">
+              <div class="flex items-center space-x-2">
+                <h4 class="font-medium text-gray-900">Mike Chen</h4>
+                <div class="flex items-center">
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-current text-yellow-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                </div>
+              </div>
+              <p class="text-gray-600 mt-2">Great MacBook at a competitive price. The seller was very responsive to my questions and the laptop works perfectly.</p>
+              <p class="text-sm text-gray-500 mt-2">March 8, 2024</p>
+            </div>
+          </div>
+        </div>
       </div>
-    <?php endif; ?>
+    </div>
   </div>
 </div>

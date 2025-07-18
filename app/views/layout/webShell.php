@@ -29,188 +29,280 @@
             </div>
         </div>
     </div>
-  <header class="bg-white shadow p-4 flex flex-col md:flex-row items-center justify-between sticky top-0 z-50">
-    <div class="flex items-center space-x-4 mb-4 md:mb-0">
-      <div class="text-3xl font-bold text-blue-600 select-none cursor-pointer"><a href="<?= BASE_PATH ?>">PBUY</a></div>
-      <form class="flex" action="" method="GET">
-        <input
-          type="text"
-          name="search"
-          placeholder="Search for products..."
-          class="border rounded-l px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-600"
-          value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-        />
-        <button
-          type="submit"
-          class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700 transition"
-          aria-label="Search"
-        >Search</button>
-      </form>
-    </div>
-    <div class="flex items-center space-x-5 text-gray-700">
-      <!-- login button -->
-      <!-- <div class="relative space-x-4 group">
-          <div class="flex items-center space-x-2">
-              <img
-                src="https://ui-avatars.com/api/?name=guest"
-                alt="guest"
-                class="w-8 h-8 rounded-full"
-              />
-              <div class="text-sm flex gap-2">
-                <p class="font-medium text-gray-700">Welcome!</p>
-                <i class="h-4 w-4 mt-1" data-lucide="chevron-down"></i>
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Top Header -->
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a href="/" class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
               </div>
-          </div>
-
-          <div class="absolute z-50 left-0 p-1 space-y-2 shadow-lg bg-gray-100 rounded-lg border w-full text-center font-bold text-xl opacity-0 group-hover:opacity-100 hover:opacity-100">
-              <div class="font-normal text-sm gap-5 text-center w-full">
-                <a href="auth/login" class="flex gap-2 px-4 py-1 rounded-lg text-black w-full h-8 hover:bg-blue-800 hover:text-white" type="submit">Login</a>
-              </div>
-              <div class="font-normal text-sm gap-5 text-center w-full">
-                <a href="auth/signup" class="flex gap-2 px-4 py-1 rounded-lg text-black w-full h-8 hover:bg-blue-800 hover:text-white" type="submit">Signup</a>
-              </div>
-          </div>
-      </div> -->
-
-      <!-- Dropdown Menu -->
-        <div class="relative group hidden md:flex items-center space-x-1 cursor-pointer">
-            <!-- Trigger -->
-            <div class="flex items-center space-x-2">
-                <i data-lucide="user" class="h-5 w-5"></i>
-                <div class="text-left">
-                <div class="text-xs text-gray-600">Hello, Sign in</div>
-                <div class="text-sm font-medium">Account & Lists</div>
-                </div>
-            </div>
-
-            <!-- Dropdown Content -->
-            <div class="absolute top-10 right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
-                <a href="<?= BASE_PATH ?>auth/login" class="block px-4 py-2 hover:bg-gray-100">Sign In</a>
-                <a href="<?= BASE_PATH ?>auth/signup" class="block px-4 py-2 hover:bg-gray-100">Create Account</a>
-                <hr class="my-1 border-gray-300">
-                <a href="<?= BASE_PATH ?>dashboard" class="block px-4 py-2 hover:bg-gray-100">My Account</a>
-                <a href="<?= BASE_PATH ?>dashboard/orders" class="block px-4 py-2 hover:bg-gray-100">My Orders</a>
-                <a href="<?= BASE_PATH ?>dashboard/recommendations" class="block px-4 py-2 hover:bg-gray-100">Wishlist</a>
-            </div>
-        </div>
-
-
-      <!-- cart -->
-        <div class="pt-1 pr-10 relative">
-            <a href="<?= BASE_PATH ?>cart" class="relative">
-                <i class="w-6 h-6" data-lucide="shopping-bag"></i>
-                <!-- Cart item count badge -->
-                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    <?= $count ?>
-                </span>
+              <span class="text-xl font-bold text-text">PBUY</span>
             </a>
-        </div>
+          </div>
 
-    </div>
-  </header>
+          <!-- Mobile Menu Button -->
+          <button class="lg:hidden p-2 text-text hover:text-primary transition-colors duration-200" id="mobileMenuButton">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+
+          <!-- Search Bar -->
+          <div class="hidden lg:flex flex-1 max-w-2xl mx-8">
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                placeholder="Search products, stores, categories..."
+                class="block w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all duration-200"
+              />
+              <div class="absolute inset-y-0 right-0 flex items-center pr-2">
+                <button class="bg-primary hover:bg-orange-600 text-white px-4 py-2 rounded-r-lg transition-colors duration-200">
+                  <i data-lucide="search" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side Icons -->
+          <div class="hidden lg:flex items-center space-x-4">
+            <button class="p-2 text-gray-600 hover:text-primary transition-colors relative">
+              <i data-lucide="heart" class="h-6 w-6"></i>
+              <span class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+            </button>
+
+            <!-- Cart -->
+            <button class="relative p-2 text-text hover:text-primary transition-colors duration-200">
+              <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+              <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </button>
+
+            <!-- User Menu -->
+            <div class="relative">
+              <button href="profile.html" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors" id="userMenuButton">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                  <i data-lucide="user" class="h-5 w-5 text-white"></i>
+                </div>
+                <span class="hidden md:block text-sm font-medium">John Doe</span>
+                <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+              </button>
+              
+              <!-- Dropdown Menu -->
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden" id="userDropdown">
+                <div class="py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="log-in" class="w-4 h-4 inline mr-2"></i>
+                    Login
+                  </a>
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="user-plus" class="w-4 h-4 inline mr-2"></i>
+                    Sign Up
+                  </a>
+                  <hr class="my-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 inline mr-2"></i>
+                    Dashboard
+                  </a>
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="package" class="w-4 h-4 inline mr-2"></i>
+                    Orders
+                  </a>
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="settings" class="w-4 h-4 inline mr-2"></i>
+                    Settings
+                  </a>
+                  <hr class="my-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                    <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>
+                    Logout
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php 
+ ?>
+        <?php
+          $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
+          if($path === BASE_PATH): 
+        ?>
+        <!-- Secondary Navigation -->
+        <div class="hidden lg:block border-t border-gray-200">
+          <div class="flex items-center justify-between py-3">
+            <!-- Categories -->
+            <div class="flex items-center space-x-6">
+              <button class="flex items-center space-x-1 text-text hover:text-primary transition-colors duration-200" id="categoriesButton">
+                <i data-lucide="menu" class="w-4 h-4"></i>
+                <span class="font-medium">Categories</span>
+              </button>
+              <a href="#" class="text-text hover:text-primary transition-colors duration-200">Electronics</a>
+              <a href="#" class="text-text hover:text-primary transition-colors duration-200">Fashion</a>
+              <a href="#" class="text-text hover:text-primary transition-colors duration-200">Home & Garden</a>
+              <a href="#" class="text-text hover:text-primary transition-colors duration-200">Sports</a>
+            </div>
+
+            <!-- Filters & Sort -->
+            <div class="flex items-center space-x-4">
+              <button class="flex items-center space-x-1 text-sm text-text hover:text-primary transition-colors duration-200" id="filtersButton">
+                <i data-lucide="filter" class="w-4 h-4"></i>
+                <span>Filters</span>
+              </button>
+              <button class="flex items-center space-x-1 text-sm text-text hover:text-primary transition-colors duration-200" id="sortButton">
+                <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                <span>Sort</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Mobile Menu -->
+        <div class="lg:hidden border-t border-gray-200 hidden" id="mobileMenu">
+          <div class="px-4 py-3 space-y-3">
+            <!-- Mobile Search -->
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                placeholder="Search products..."
+                class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              />
+            </div>
+
+            <!-- Mobile Navigation Links -->
+            <div class="flex flex-col space-y-2">
+              <a href="#" class="flex items-center space-x-2 py-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="smartphone" class="w-4 h-4"></i>
+                <span>Electronics</span>
+              </a>
+              <a href="#" class="flex items-center space-x-2 py-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="shirt" class="w-4 h-4"></i>
+                <span>Fashion</span>
+              </a>
+              <a href="#" class="flex items-center space-x-2 py-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                <span>Home & Garden</span>
+              </a>
+              <a href="#" class="flex items-center space-x-2 py-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="dumbbell" class="w-4 h-4"></i>
+                <span>Sports</span>
+              </a>
+            </div>
+
+            <!-- Mobile Actions -->
+            <div class="flex items-center justify-between pt-3 border-t border-gray-200">
+              <button class="flex items-center space-x-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                <span>Cart (3)</span>
+              </button>
+              <button class="flex items-center space-x-2 text-text hover:text-primary transition-colors duration-200">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span>Account</span>
+              </button>
+            </div>
+
+            <!-- Mobile Filter & Sort -->
+            <div class="flex items-center space-x-4 pt-3 border-t border-gray-200">
+              <button class="flex items-center space-x-1 text-sm text-text hover:text-primary transition-colors duration-200" id="mobileFiltersButton">
+                <i data-lucide="filter" class="w-4 h-4"></i>
+                <span>Filters</span>
+              </button>
+              <button class="flex items-center space-x-1 text-sm text-text hover:text-primary transition-colors duration-200" id="mobileSortButton">
+                <i data-lucide="arrow-up-down" class="w-4 h-4"></i>
+                <span>Sort</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
     <main className="flex-1">
         <?php echo $content; ?>
     </main>
 
-    <footer class="bg-gray-900 text-white">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- {/* Company Info */} -->
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="store" class="h-6 w-6 text-blue-400"> </i>
-                        <span class="font-bold text-xl">PBUY</span>
-                    </div>
-                    <p class="text-gray-400">Your trusted marketplace connecting buyers with quality vendors worldwide.</p>
-                    <div class="flex space-x-4">
-                        <i data-lucide="facebook" class="h-5 w-5 text-gray-400 hover:text-white cursor-pointer"></i>
-                        <i data-lucide="twitter" class="h-5 w-5 text-gray-400 hover:text-white cursor-pointer"></i>
-                        <i data-lucide="instagram" class="h-5 w-5 text-gray-400 hover:text-white cursor-pointer"></i>
-                        <i data-lucide="mail" class="h-5 w-5 text-gray-400 hover:text-white cursor-pointer"></i>
-                    </div>
-                </div>
-
-                <!-- {/* Quick Links */} -->
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="<?= BASE_PATH ?>products" class="text-gray-400 hover:text-white">
-                                Products
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_PATH ?>vendors" class="text-gray-400 hover:text-white">
-                                Vendors
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_PATH ?>categories" class="text-gray-400 hover:text-white">
-                                Categories
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_PATH ?>deals" class="text-gray-400 hover:text-white">
-                                Deals
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- {/* Customer Service */} -->
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Customer Service</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="/help" class="text-gray-400 hover:text-white">
-                                Help Center
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/contact" class="text-gray-400 hover:text-white">
-                                Contact Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/returns" class="text-gray-400 hover:text-white">
-                                Returns
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/shipping" class="text-gray-400 hover:text-white">
-                                Shipping Info
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- {/* Legal */} -->
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Legal</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="<?= BASE_PATH ?>privacy" class="text-gray-400 hover:text-white">
-                                Privacy Policy
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_PATH ?>terms" class="text-gray-400 hover:text-white">
-                                Terms of Service
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= BASE_PATH ?>cookies" class="text-gray-400 hover:text-white">
-                                Cookie Policy
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+    <footer class="bg-gray-50 border-t border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Company Info -->
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+              </div>
+              <span class="text-xl font-bold text-text">PBUY</span>
             </div>
-
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 PBUY. All rights reserved.</p>
+            <p class="text-gray-600 mb-4">Your trusted multivendor marketplace for quality products from verified sellers worldwide.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-200">
+                <i data-lucide="facebook" class="w-5 h-5"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-200">
+                <i data-lucide="twitter" class="w-5 h-5"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-200">
+                <i data-lucide="instagram" class="w-5 h-5"></i>
+              </a>
             </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h3 class="text-lg font-semibold text-text mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">About Us</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Contact</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">FAQ</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Become a Vendor</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Affiliate Program</a></li>
+            </ul>
+          </div>
+
+          <!-- Policies -->
+          <div>
+            <h3 class="text-lg font-semibold text-text mb-4">Policies</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Privacy Policy</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Terms of Service</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Return Policy</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Shipping Info</a></li>
+              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Payment Security</a></li>
+            </ul>
+          </div>
+
+          <!-- Newsletter -->
+          <div>
+            <h3 class="text-lg font-semibold text-text mb-4">Newsletter</h3>
+            <p class="text-gray-600 mb-4">Subscribe to get updates on new products and exclusive offers.</p>
+            <div class="flex">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              />
+              <button class="bg-primary hover:bg-orange-600 text-white px-4 py-2 rounded-r-md transition-colors duration-200">
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-600 text-sm">© 2025 PBUY. All rights reserved.</p>
+          <div class="flex items-center space-x-4 mt-4 md:mt-0">
+            <img src="https://via.placeholder.com/40x25/10B981/FFFFFF?text=VISA" alt="Visa" class="h-6">
+            <img src="https://via.placeholder.com/40x25/F97316/FFFFFF?text=MC" alt="Mastercard" class="h-6">
+            <img src="https://via.placeholder.com/40x25/374151/FFFFFF?text=PP" alt="PayPal" class="h-6">
+          </div>
+        </div>
+      </div>
     </footer>
 </div>

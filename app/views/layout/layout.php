@@ -10,13 +10,13 @@
         <!-- Basic Meta Tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MarketPlace - Your Ultimate Shopping Destination</title>
+        <title>PBUY - Your Ultimate Shopping Destination</title>
         <meta name="description" content="Discover millions of products from trusted sellers worldwide. Best prices, fast delivery, and secure shopping.">
-        <meta name="keywords" content="ecommerce, marketplace, online shopping, deals, electronics, fashion, home">
-        <meta name="author" content="MarketPlace">
+        <meta name="keywords" content="ecommerce, pbuy, marketplace, online shopping, deals, electronics, fashion, home">
+        <meta name="author" content="Pbuy">
 
         <!-- Open Graph Meta Tags (for social sharing) -->
-        <meta property="og:title" content="MarketPlace - Your Ultimate Shopping Destination">
+        <meta property="og:title" content="PBUY - Your Ultimate Shopping Destination">
         <meta property="og:description" content="Discover millions of products from trusted sellers worldwide. Best prices, fast delivery, and secure shopping.">
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.marketplace.com/"> <!-- Replace with your actual URL -->
@@ -24,7 +24,7 @@
 
         <!-- Twitter Card Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="MarketPlace - Your Ultimate Shopping Destination">
+        <meta name="twitter:title" content="PBUY - Your Ultimate Shopping Destination">
         <meta name="twitter:description" content="Discover millions of products from trusted sellers worldwide. Best prices, fast delivery, and secure shopping.">
         <meta name="twitter:image" content="https://www.marketplace.com/images/og-image.jpg"> <!-- Replace with your image URL -->
         <meta name="twitter:site" content="@MarketPlace"> <!-- Replace with your Twitter handle -->
@@ -32,9 +32,29 @@
         <!-- Favicon -->
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-        <link rel="stylesheet" href="<?= BASE_PATH ?>css/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#F97316',
+                            accent: '#10B981',
+                            background: '#FFFFFF',
+                            text: '#374151'
+                        }
+                    }
+                }
+            }
+        </script>
+        <script src="<?= BASE_PATH ?>js/homepage.js"></script>
+        <script src="<?= BASE_PATH ?>js/dashboard.js"></script>
+        <script src="<?= BASE_PATH ?>js/productDetails.js"></script>
+        <script src="<?= BASE_PATH ?>js/search&filter.js"></script>
+        <!-- <link rel="stylesheet" href="<?= BASE_PATH ?>css/style.css"> -->
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
+        <link rel="stylesheet" href="/css/web.css">
         <!-- <link rel="stylesheet" href="/css/style.css"> -->
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <!-- Development version -->

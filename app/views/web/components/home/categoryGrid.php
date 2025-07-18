@@ -32,11 +32,15 @@
             $slug = $category['slug'];
       ?>
         <a href="/category/<?= $slug ?>" class="block hover:shadow-lg transition-shadow cursor-pointer">
-          <div class="p-4 text-center border rounded-lg bg-white">
-            <img src="" alt="<?= htmlspecialchars($category['name']) ?>" width="80" height="80" class="mx-auto mb-3 rounded-lg" />
-            <h3 class="font-medium text-sm mb-1"><?= htmlspecialchars($category['name']) ?></h3>
-            <p class="text-xs text-gray-500"><?= htmlspecialchars($category['count']) ?></p>
-          </div>
+          <div class="category-card">
+            <div class="bg-white rounded-lg p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+              <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <!-- <i data-lucide="smartphone" class="h-8 w-8 text-primary"></i> -->
+                <img src="" alt="<?= htmlspecialchars($category['name']) ?>" width="80" height="80" class="mx-auto mb-3 rounded-lg" />
+              </div>
+              <h4 class="font-semibold"><?= htmlspecialchars($category['name']) ?></h4>
+            </div>
+          </div>  
         </a>
       <?php 
         endforeach; 

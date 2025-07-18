@@ -8,9 +8,11 @@ $routes = [
     ''                         => ['view' => '/../app/pages/web/home.php'],
     'home'                     => ['view' => '/../app/pages/web/home.php'],
     'cart'                     => ['view' => '/../app/pages/web/cart.php'],
+    'search'                     => ['view' => '/../app/pages/web/search&filter.php'],
     'dummy'                    => ['view' => '/../app/controllers/getDummyProducts.php'],
     'products'                 => ['view' => '/../app/pages/web/products.php'],
     'products/:productId'       => ['view' => '/../app/pages/web/productDetails.php'],
+    'user/dashboard'       => ['view' => '/../app/pages/web/dashboard.php'],
     'vendors'                  => ['view' => '/../app/pages/web/vendors.php'],
     'vendors/:vendorId'          => ['view' => '/../app/pages/web/vendorDetails.php'],
     'auth/login'               => ['view' => '/../app/views/auth/login.php'],
@@ -44,6 +46,7 @@ foreach ($routes as $routePattern => $routeConfig) {
 
         // Extract dynamic params
         $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+   
         foreach ($params as $key => $value) {
             $_GET[$key] = $value; // Add to $_GET for convenience
         }

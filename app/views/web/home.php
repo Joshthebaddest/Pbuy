@@ -128,18 +128,6 @@ $products = [
     'reviews' => 28,
     'price' => 34.99,
     'originalPrice' => null
-  ],
-  [
-    'id' => 105,
-    'name' => '4K Action Camera Waterproof',
-    'image' => '/images/products/camera.jpg',
-    'vendorId' => 50,
-    'vendorName' => 'AdvenCam',
-    'discount' => 25,
-    'rating' => 4.5,
-    'reviews' => 112,
-    'price' => 119.99,
-    'originalPrice' => 159.99
   ]
 ];
 $vendors = [
@@ -196,9 +184,11 @@ $vendors = [
 ]
 
 ?>
+
+
 <div>
   <!-- Hero Banner -->
-    <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
+    <section class="bg-gradient-to-r from-primary to-orange-400 text-white py-20">
       <div class="container mx-auto px-4 text-center">
         <h1 class="text-4xl md:text-6xl font-bold mb-6">Discover Amazing Products</h1>
         <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
@@ -206,17 +196,12 @@ $vendors = [
           quality.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button size="lg" asChild class="bg-white text-blue-600 hover:bg-gray-100">
-            <a href="<?= BASE_PATH ?>products">Shop Now</a>
-          </button>
-          <button
-            size="lg"
-            variant="outline"
-            asChild
-            class="border-white text-white hover:bg-white hover:text-blue-600"
-          >
-            <a href="<?= BASE_PATH ?>vendors">Browse Vendors</a>
-          </button>
+          <a href="<?= BASE_PATH ?>products" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            Start Shopping
+          </a>
+          <a href="<?= BASE_PATH ?>products" class="bg-transparent text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:text-primary transition-colors">
+            Browse Vendors
+          </a>
         </div>
       </div>
     </section>
@@ -282,98 +267,113 @@ $vendors = [
     </section>
 
     <section class="py-16">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center mb-12">
-          <div>
-            <h2 class="text-3xl font-bold mb-4">Featured Products</h2>
-            <p class="text-gray-600">Browse our latest and most popular items</p>
-          </div>
-          <Button asChild>
-            <Link href="/products">View All Products</Link>
-          </Button>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-12">
+          <h3 class="text-3xl font-bold">Featured Products</h3>
+          <a href="/products" class="text-primary font-semibold hover:underline">View All</a>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <?php foreach ($products as $product): ?>
-          <div class="group hover:shadow-lg transition-shadow duration-200 border rounded-lg overflow-hidden bg-white">
-            <div class="p-0">
-              <div class="relative overflow-hidden rounded-t-lg">
-                <img
-                  src="<?php echo $product['image'] ?? '/placeholder.svg'; ?>"
-                  alt="<?php echo htmlspecialchars($product['name']); ?>"
-                  width="300"
-                  height="300"
-                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
-                />
-                <?php if (!empty($product['discount'])): ?>
-                  <span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    -<?php echo $product['discount']; ?>%
-                  </span>
-                <?php endif; ?>
+            <div class="product-card bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+              <div class="relative">
+                <a href="product-detail.html">
+                  <img 
+                    src="<?php echo $product['image'] ?? '/placeholder.svg'; ?>"
+                    alt="<?php echo htmlspecialchars($product['name']); ?>"
+                    class="w-full h-48 object-cover"
+                  >
+                </a>
+                <button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                  <i data-lucide="heart" class="h-4 w-4 text-gray-600"></i>
+                </button>
+                <span class="absolute top-3 left-3 bg-accent text-white px-2 py-1 text-xs font-semibold rounded">New</span>
               </div>
-
               <div class="p-4">
-                <a href="/products/<?php echo $product['id']; ?>">
-                  <h3 class="font-semibold text-lg mb-2 hover:text-blue-600 transition-colors line-clamp-2">
-                    <?php echo htmlspecialchars($product['name']); ?>
-                  </h3>
-                </a>
-                <a href="/vendors/<?php echo $product['vendorId']; ?>">
-                  <p class="text-sm text-gray-600 mb-2 hover:text-blue-600 transition-colors">
-                    by <?php echo htmlspecialchars($product['vendorName']); ?>
-                  </p>
-                </a>
-
+                <a href="product-detail.html" class="font-semibold mb-2 hover:text-primary transition-colors block"><?php echo($product['name']); ?></a>
+                <p class="text-sm text-gray-600 mb-2"><?php echo($product['vendorName']); ?></p>
                 <div class="flex items-center mb-2">
-                  <div class="flex items-center">
-                    <?php for ($i = 0; $i < 5; $i++): ?>
-                      <i data-lucide="star" class="w-4 h-4 <?php echo $i < floor($product['rating']) ? 'text-yellow-400' : 'text-gray-300'; ?>"></i>
-                    <?php endfor; ?>
-                  </div>
-                  <span class="text-sm text-gray-600 ml-2">(<?php echo $product['reviews']; ?>)</span>
+                    <div class="flex text-yellow-400">
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4"></i>
+                    </div>
+                    <span class="text-sm text-gray-600 ml-2">(124)</span>
                 </div>
-
                 <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <span class="text-xl font-bold text-green-600">$<?php echo number_format($product['price'], 2); ?></span>
+                  <div>
+                    <span class="text-lg font-bold text-primary">$<?php echo number_format($product['price'], 2); ?></span>
                     <?php if (!empty($product['originalPrice'])): ?>
-                      <span class="text-sm text-gray-500 line-through">$<?php echo number_format($product['originalPrice'], 2); ?></span>
+                      <span class="text-sm text-gray-500 line-through ml-2">$<?php echo number_format($product['originalPrice'], 2); ?></span>
                     <?php endif; ?>
                   </div>
+                  <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors" onclick="addToCartQuick('product-1')">
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
-
-            <div class="p-4 pt-0">
-              <form method="POST" action="/add-to-cart.php">
-                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors flex items-center justify-center">
-                  <i data-lucide="shopping-cart" class="w-4 h-4 mr-2"></i>
-                  Add to Cart
-                </button>
-              </form>
-            </div>
-          </div>
           <?php endforeach; ?>
         </div>
       </div>
     </section>
 
     <section class="py-16">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center mb-12">
-          <h2 class="text-2xl font-bold mb-6">Recently Viewed</h2>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-12">
+          <h3 class="text-3xl font-bold">Recently Viewed</h3>
+          <a href="/products" class="text-primary font-semibold hover:underline">View All</a>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <!-- Product Grid Placeholder -->
           <?php foreach ($products as $product): ?>
-            <?php include __DIR__ .'/components/products-grid.php'; ?>
+                        <div class="product-card bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+              <div class="relative">
+                <a href="product-detail.html">
+                  <img 
+                    src="<?php echo $product['image'] ?? '/placeholder.svg'; ?>"
+                    alt="<?php echo htmlspecialchars($product['name']); ?>"
+                    class="w-full h-48 object-cover"
+                  >
+                </a>
+                <button class="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                  <i data-lucide="heart" class="h-4 w-4 text-gray-600"></i>
+                </button>
+                <span class="absolute top-3 left-3 bg-accent text-white px-2 py-1 text-xs font-semibold rounded">New</span>
+              </div>
+              <div class="p-4">
+                <a href="product-detail.html" class="font-semibold mb-2 hover:text-primary transition-colors block"><?php echo($product['name']); ?></a>
+                <p class="text-sm text-gray-600 mb-2"><?php echo($product['vendorName']); ?></p>
+                <div class="flex items-center mb-2">
+                    <div class="flex text-yellow-400">
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4 fill-current"></i>
+                      <i data-lucide="star" class="h-4 w-4"></i>
+                    </div>
+                    <span class="text-sm text-gray-600 ml-2">(124)</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-lg font-bold text-primary">$<?php echo number_format($product['price'], 2); ?></span>
+                    <?php if (!empty($product['originalPrice'])): ?>
+                      <span class="text-sm text-gray-500 line-through ml-2">$<?php echo number_format($product['originalPrice'], 2); ?></span>
+                    <?php endif; ?>
+                  </div>
+                  <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors" onclick="addToCartQuick('product-1')">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
           <?php endforeach; ?>
         </div>
       </div>
     </section>
 
-    <section class="bg-gradient-to-r from-blue-600 to-purple-700 rounded-lg p-8 text-white">
+    <section class="bg-gradient-to-r from-primary to-orange-400 rounded-lg p-8 text-white">
       <div class="max-w-2xl mx-auto text-center">
         <div class="flex justify-center mb-4">
           <div class="bg-white/20 p-3 rounded-full">
@@ -382,7 +382,7 @@ $vendors = [
         </div>
 
         <h2 class="text-3xl font-bold mb-4">Stay in the Loop</h2>
-        <p class="text-xl mb-8 opacity-90">
+        <p class="text-xl mb-8 opacity-95">
           Get exclusive deals, new arrivals, and insider updates delivered straight to your inbox.
         </p>
 
@@ -391,12 +391,12 @@ $vendors = [
             type="email"
             placeholder="Enter your email address"
             value=""
-            class="flex-1 bg-white text-gray-900"
+            class="flex-1 bg-white text-gray-900 rounded-lg px-2"
             required
           />
-          <button type="submit" disabled="false" class="bg-white text-blue-600 hover:bg-gray-100">
+          <a href="<?= BASE_PATH ?>products" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
             Subscribe
-          </button>
+          </a>
         </form>
 
         <div class="flex items-center justify-center mt-6 text-sm opacity-75">
