@@ -1,52 +1,72 @@
 <?php
- require_once __DIR__ .'/../../config/globalConfig.php';
+ require_once __DIR__ .'/../../../config/globalConfig.php';
     $loggedInUser = $_SESSION["user"];
     $profileImg = $_SESSION["profile_img"];
 ?>
 
 <div class="flex h-screen bg-gray-100">
     <!-- sidebar -->
-    <div class="flex flex-col h-screen w-64 bg-gray-900 text-white">
-        <div class="p-4">
+    <div class="flex flex-col h-screen w-64 bg-white text-gray-900 shadow-xl z-50 border-r border-gray-200">
+        <div class="p-4 border-b">
             <h1 class="text-xl font-bold">PBUY</h1>
         </div>
 
         <nav class="flex-1 px-2 py-4">
             <ul class="space-y-2">
                 <li class="rounded-lg">
-                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors" href="<?= BASE_PATH ?>dashboard">
+                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (preg_match('#^'. BASE_PATH.'dashboard/?$#', $_SERVER['REQUEST_URI'])) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard">
                         <i class="h-5 w-5 mt-1" data-lucide="layout-dashboard"></i>    
                         Dashboard
                     </a>
                 </li>
                 <?php if(in_array($_SESSION['role'], ['super_admin', 'admin'])): ?>
                 <li class="rounded-lg">
-                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors" href="<?= BASE_PATH ?>dashboard/users">
+                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'users') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/users">
                         <i class="h-5 w-5 mt-1" data-lucide="users"></i>    
                         Users
                     </a>
                 </li>
                 <?php endif; ?>
                 <li class="rounded-lg">
-                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors" href="<?= BASE_PATH ?>dashboard/products">
+                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'products') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/products">
                         <i class="h-5 w-5 mt-1" data-lucide="package"></i>    
                         Products
+                    </a>
+                </li>
+                <li class="rounded-lg">
+                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'orders') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/orders">
+                        <i class="h-5 w-5 mt-1" data-lucide="clipboard"></i>    
+                        Orders
+                    </a>
+                </li>
+                <li class="rounded-lg">
+                    <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'categories') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/categories">
+                        <i class="h-5 w-5 mt-1" data-lucide="tag"></i>    
+                        Categories
                     </a>
                 </li>
             </ul>
         </nav>
 
-        <div class="p-4 border-t border-gray-800">
-            <a class="rounded-lg flex cursor-pointer items-center w-full px-4 py-2 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors flex gap-2" href="<?= BASE_PATH ?>dashboard/settings">  
-                <i class="h-4 w-4 mt-1" data-lucide="settings"></i>    
-                Settings
-            </a>
+        <div class="p-4 border-t">
+            <?php if($_SESSION['role'] === 'vendor'): ?>
+                <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'settings') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/settings">
+                    <i class="h-5 w-5 mt-1" data-lucide="settings"></i>    
+                    Store Settings
+                </a>
+            <?php else: ?>
+                <a class="flex gap-2 cursor-pointer items-center w-full px-4 py-2 rounded-lg font-semibold <?php echo (strpos($_SERVER['REQUEST_URI'], 'settings') !== false) ? 'border-l-4 border-orange-500 bg-orange-100 text-orange-600' : 'border-transparent text-gray-600  hover:bg-gray-200 hover:text-orange-600'; ?> transition-colors" href="<?= BASE_PATH ?>dashboard/settings">  
+                    <i class="h-5 w-5 mt-1" data-lucide="settings"></i>    
+                    Settings
+                </a>
+            <?php endif; ?>
+
 
             <form action="../controllers/logoutController.php" method="post">
                 <button 
-                    class="flex gap-2 items-center w-full px-4 py-2 text-gray-300 rounded-lg hover:bg-red-600 hover:text-white transition-colors"  
+                    class="flex gap-2 items-center w-full px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-red-600 hover:text-white transition-colors"  
                 >
-                    <i class="w-4 h-4 mt-1" data-lucide="log-out"></i> Logout
+                    <i class="w-5 h-5 mt-1" data-lucide="log-out"></i> Logout
                 </button>
             </form>
         </div>
@@ -61,29 +81,33 @@
                     <h1 class="text-xl font-semibold text-gray-900">PBUY</h1>
                 </div>
 
-                <div class="relative space-x-4 group mr-10">
-                    <div class="flex items-center space-x-2">
-                        <img
-                            src="<?= !empty($profileImg) ? $profileImg : 'https://ui-avatars.com/api/?name='.urldecode($loggedInUser); ?>"
-                            alt="<?= $loggedInUser ?>"
-                            class="w-8 h-8 rounded-full"
-                        />
-                        <div class="text-sm flex gap-2">
-                            <p class="font-medium text-gray-700">Hi <?=$loggedInUser?>!</p>
-                            <i class="h-4 w-4 mt-1" data-lucide="chevron-down"></i>
+                <div class="relative">
+                    <button href="profile.html" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors" id="userMenuButton">
+                        <div class="w-8 h-8 <?php echo isset($_SESSION['user']) ? 'bg-primary' : 'bg-gray-300'; ?> rounded-full flex items-center justify-center">
+                            <img
+                                src="<?= !empty($profileImg) ? $profileImg : 'https://ui-avatars.com/api/?name='.urldecode($loggedInUser); ?>"
+                                alt="<?= $loggedInUser ?>"
+                                class="w-8 h-8 rounded-full"
+                            />
                         </div>
-                    </div>
-
-                    <div class="absolute z-50 left-0 p-1 space-y-2 shadow-lg bg-gray-100 rounded-lg border w-full text-center font-bold text-xl opacity-0 group-hover:opacity-100 hover:opacity-100">
-                        <ul>
-                            <li>
-                                <a class="block px-4 py-2 bg-gray-200 text-gray-800 text-left rounded-lg text-sm hover:bg-gray-800 hover:text-white" href="./profile">Profile</a>
-                            </li>
-                        </ul>
-                        <div class="font-normal text-sm gap-5 text-center w-full">
-                            <form action="<?= BASE_PATH ?>auth/logout" method="post">
-                                <button class="flex gap-2 px-4 py-1 bg-red-600 rounded-lg text-white w-full h-8 hover:bg-red-800" type="submit"> <i class="w-4 h-4 mt-1" data-lucide="log-out"></i>  Logout</button>
-                            </form>
+                        <?php if(isset($_SESSION['user'])): ?>
+                            <span class="hidden md:block text-sm font-medium">Hi, <?php echo $_SESSION['user']; ?></span>
+                        <?php endif; ?>
+                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                    </button>
+              
+                    <!-- Dropdown Menu -->
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-50" id="userDropdown">
+                        <div class="py-1">
+                            <a href="<?php echo BASE_PATH; ?>profile" class="block px-4 py-2 text-sm text-text hover:bg-gray-200 transition-colors duration-200">
+                                <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>
+                                profile
+                            </a>
+                            <hr class="my-1">
+                            <a href="<?php echo BASE_PATH; ?>auth/logout" class="block px-4 py-2 text-sm text-text hover:bg-red-500 hover:text-gray-100 transition-colors duration-200">
+                                <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>
+                                Logout
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -5,16 +5,16 @@
         protected static $table = 'password_reset_tokens';
 
         protected static $schema = [
-            'user_email' => ['type' => 'VARCHAR(255)', 'required' => true], // Email of the user
-            'token_hash' => ['type' => 'VARCHAR(255)', 'required' => true], // Hashed token for security
-            'expires_at' => ['type' => 'DATETIME', 'required' => true], // Expiration date and time of the token
-            'created_at' => ['type' => 'DATETIME', 'default' => 'CURRENT_TIMESTAMP'], // Optional: Track request creation
+            'id' => ['type' => 'INT', 'auto_increment' => true, 'primary' => true],
+            'user_email' => ['type' => 'VARCHAR(255)', 'required' => true],
+            'token_hash' => ['type' => 'VARCHAR(255)', 'required' => true, 'unique' => true],
+            'expires_at' => ['type' => 'DATETIME', 'required' => true],
+            'created_at' => ['type' => 'DATETIME', 'default' => 'CURRENT_TIMESTAMP'],
         ];
-
 
         protected static $rules = [
             'user_email' => 'string|required',
-            'token_hash' => 'string|required',
+            'token_hash' => 'string|required|unique:password_reset_tokens,token_hash',
             'expires_at' => 'date|required',
         ];
     }

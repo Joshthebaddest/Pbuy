@@ -26,39 +26,22 @@
                     </h2>
                 </div>
 
-                <form class="mt-8 space-y-6" action="/apps/app/controllers/signupController.php" method="post" id="signupform">
+                <form class="mt-8 space-y-6" action="/pbuy/app/controllers/signupController.php" method="post" id="signupform">
                     <div class="rounded-md shadow-sm space-y-4">
                         <div>
                             <label htmlFor="username" class="block text-sm font-medium text-gray-700">
-                                Firstname:
+                                Fullname:
                             </label>
 
                             <input 
                                 class="border w-full rounded-lg outline-none p-2" 
-                                type="text" t
-                                name="firstname"
-                                id="firstname"
+                                type="text"
+                                name="fullname"
+                                id="fullname"
                             />
                             <!-- <span class="error-message">Must be a valid username<span> -->
-                            <?php if (!empty($errors["firstname"])): ?>
-                                <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["firstname"]) ?></span>
-                            <?php endif; ?>
-                        </div>
-                    
-
-                        <div>
-                            <label htmlFor="lastname" class="block text-sm font-medium text-gray-700">
-                                Lastname:
-                            </label>
-                            <input 
-                                class="border w-full rounded-lg outline-none p-2" 
-                                type="text" 
-                                name="lastname"
-                                id="lastname"
-                            />
-                            <!-- <span class="error-message">Must be a valid username<span> -->
-                            <?php if (!empty($errors["lastname"])): ?>
-                                <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["lastname"]) ?></span>
+                            <?php if (!empty($errors["fullname"])): ?>
+                                <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["fullname"]) ?></span>
                             <?php endif; ?>
                         </div>
 
@@ -107,38 +90,6 @@
                             <!-- <span class="error-message">Please select a country<span> -->
                             <?php if (!empty($errors["country"])): ?>
                                 <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["country"]) ?></span>
-                            <?php endif; ?>
-                        </div>
-
-                        <div>
-                            <label htmlFor="username" class="block text-sm font-medium text-gray-700">
-                                Gender:
-                            </label>
-                            <select class="border rounded-lg w-full outline-none p-2" id="gender" name="gender">
-                                <option value="" selected>Select your Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="others">Others</option>
-                            </select>
-                            <!-- <span class="error-message">Please specify your gender <span> -->
-                            <?php if (!empty($errors["gender"])): ?>
-                                <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["gender"]) ?></span>
-                            <?php endif; ?>
-                        </div>
-
-                        <div>
-                            <label htmlFor="username" class="block text-sm font-medium text-gray-700">
-                                Date Of Birth:
-                            </label>
-                            <input 
-                                class="border w-full rounded-lg outline-none p-2" 
-                                type="date" 
-                                name="dob" 
-                                id="dob" 
-                            />
-                            <!-- <span class="error-message">Must be a valid Date<span> -->
-                            <?php if (!empty($errors["dob"])): ?>
-                                <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["dob"]) ?></span>
                             <?php endif; ?>
                         </div>
 

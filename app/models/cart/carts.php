@@ -1,5 +1,5 @@
 <?php 
-    require_once __DIR__ .'/../../config/models.php';
+    require_once __DIR__ .'/../../../config/models.php';
 
     class Cart extends Model {
         protected static $table = 'carts';

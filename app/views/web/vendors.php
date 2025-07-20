@@ -1,7 +1,7 @@
 <?php 
   $dir = realpath(__DIR__);
-   require_once __DIR__ .'/../../../config/globalConfig.php';
-  include($dir.'/../../models/users.php');
+  require_once __DIR__ .'/../../../config/globalConfig.php';
+  require_once __DIR__ .'/../../models/users.php';
   $username = $_SESSION['user'] ?? null;
   $role = 'vendor';
   $vendors = [];

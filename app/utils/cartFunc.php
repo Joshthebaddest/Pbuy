@@ -129,7 +129,7 @@ class CartManager {
     }
 
     protected function addToDatabase($productId, $quantity) {
-        require_once __DIR__ . '/../models/carts.php';
+        require_once __DIR__ . '/../models/cart/carts.php';
         try{
             // Check if product exists in DB cart
             $row = Cart::query()
@@ -149,7 +149,7 @@ class CartManager {
     }
 
     protected function getFromDatabase() {
-        require_once __DIR__ . '/../models/carts.php';
+        require_once __DIR__ . '/../models/cart/carts.php';
         try{
             if(isset($_SESSION['cart'])){
                 foreach ($_SESSION['cart'] as $productId => $quantity) {

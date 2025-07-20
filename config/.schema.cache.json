@@ -1,0 +1,30 @@
+{
+    "users": {
+        "hash": "09d51bdfaf0f7f69c2db831bbcf968ee",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "vendorproducts": {
+        "hash": "9b23d41f6ad26692ab5d1188d80b9a28",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "password_reset_tokens": {
+        "hash": "cc15cb0ea96621c21f7b9d218bffee08",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "product_images": {
+        "hash": "6b0d13d9355c8b1c6e74577c93cdd0de",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "categories": {
+        "hash": "09e3b6d8f64a87b3d57fba0e1db06e81",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "carts": {
+        "hash": "18d1e17173651874b5cb836728c09713",
+        "updated_at": "2025-07-19T16:49:07+02:00"
+    },
+    "tags": {
+        "hash": "267f3dc3a389a11c4d30852170426473",
+        "updated_at": "2025-07-20T01:39:29+02:00"
+    }
+}

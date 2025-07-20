@@ -276,7 +276,7 @@ $vendors = [
           <?php foreach ($products as $product): ?>
             <div class="product-card bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
               <div class="relative">
-                <a href="product-detail.html">
+                <a href="<?php echo BASE_PATH; ?>products/<?php echo $product['name']; ?>">
                   <img 
                     src="<?php echo $product['image'] ?? '/placeholder.svg'; ?>"
                     alt="<?php echo htmlspecialchars($product['name']); ?>"
@@ -289,7 +289,7 @@ $vendors = [
                 <span class="absolute top-3 left-3 bg-accent text-white px-2 py-1 text-xs font-semibold rounded">New</span>
               </div>
               <div class="p-4">
-                <a href="product-detail.html" class="font-semibold mb-2 hover:text-primary transition-colors block"><?php echo($product['name']); ?></a>
+                <a href="<?php echo BASE_PATH; ?>products/<?php echo $product['name']; ?>" class="font-semibold mb-2 hover:text-primary transition-colors block"><?php echo($product['name']); ?></a>
                 <p class="text-sm text-gray-600 mb-2"><?php echo($product['vendorName']); ?></p>
                 <div class="flex items-center mb-2">
                     <div class="flex text-yellow-400">

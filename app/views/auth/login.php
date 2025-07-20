@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . '/../../../config/globalConfig.php';
     require_once __DIR__  .'/../../controllers/loginController.php';
+    print_r($_SESSION['toast']);
 ?>
 
 
@@ -33,7 +34,7 @@
                     </div>
                 </div>
 
-                <form class="mt-8 space-y-6" action="/apps/app/controllers/loginController.php" method="post" id="signupform">
+                <form class="mt-8 space-y-6" action="/pbuy/app/controllers/loginController.php" method="post" id="signupform">
                     <div class="rounded-md shadow-sm space-y-4">
                         <div>
                             <label htmlFor="userInfo" class="block text-sm font-medium text-gray-700">

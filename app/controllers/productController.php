@@ -1,8 +1,8 @@
 <?php 
     $dir = realpath(__DIR__);
-    include_once __DIR__ . '/../../config/globalConfig.php';
-    require_once($dir . '/../data.php');
-    require($dir . '/fileUploadController.php');
+    require_once __DIR__ . '/../../config/globalConfig.php';
+    require_once __DIR__ . '/fileUploadController.php';
+    
     $product_name = $product_size = $quantity = $descriptions = $price = $category_id =  "";
     $images = [
         'img_url_0' => '',

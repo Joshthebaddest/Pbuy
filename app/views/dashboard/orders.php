@@ -11,11 +11,11 @@
     $column = [
         ['slug' => 'id', 'label' => 'ID', 'sortable' => true],
         ['slug' => 'image', 'label' => 'IMAGE', 'sortable' => false],
-        ['slug' => 'product_name', 'label' => 'NAME', 'sortable' => true],
-        ['slug' => 'product_size', 'label' => 'SIZE', 'sortable' => true],
-        ['slug' => 'price', 'label' => 'PRICE', 'sortable' => true],
-        ['slug' => 'quantity', 'label' => 'QUANTITY', 'sortable' => true],
+        ['slug' => 'customer', 'label' => 'CUSTOMER', 'sortable' => true],
+        ['slug' => 'vendor', 'label' => 'VENDOR', 'sortable' => true],
+        ['slug' => 'total', 'label' => 'TOTAL', 'sortable' => true],
         ['slug' => 'status', 'label' => 'STATUS', 'sortable' => false],
+        ['slug' => 'date', 'label' => 'DATE', 'sortable' => true],
         ['slug' => 'action', 'label' => 'ACTION', 'sortable' => false],
     ];
 
@@ -30,46 +30,33 @@
 
 ?>
 
-<div style="padding-bottom: 400px;" class="space-y-6">
-    <div class="space-y-4 sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="space-y-4">
+    <div class="space-y-10 sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex justify-between">
             <div>
-                <h3 class="text-lg font-semibold text-gray-900">Product Moderation</h3>
-                <p class="text-gray-600">Review and moderate products from vendors</p>
+                <h3 class="text-lg font-semibold text-gray-900">Orders Oversight</h3>
+                <p class="text-gray-600">Review and moderate orders from vendors</p>
             </div>
-            <button id="addProductBtn" class="flex gap-2 bg-gradient-to-br from-orange-500 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold">
-                <i class="w-6 h-6 text-white" data-lucide="package"></i> 
-                Add Product
-            </button>
-        </div>
-        <div class="flex justify-end gap-5">
-            <div class="relative">
-                <input type="text" placeholder="Search products..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-            <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
-                <option>All Products</option>
-                <option>Pending Review</option>
-                <option>Approved</option>
-                <option>Rejected</option>
-            </select>
 
-            <?php if($_SESSION['role'] === "vendor"): ?>
-                <div class="flex justify-between mb-4">
-                    <select class="border rounded-md py-2 px-4" >
-                        <option value="">All Categories</option>
-                        <option value="category1">Category 1</option>
-                        <option value="category2">Category 2</option>
-                    </select>
+            <div class="flex gap-2">
+                <div class="relative">
+                    <input type="text" placeholder="Search orders..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </div>
-            <?php endif; ?>
+                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option>All Orders</option>
+                    <option>Pending</option>
+                    <option>Processing</option>
+                    <option>Shipped</option>
+                    <option>Delivered</option>
+                    <option>Cancelled</option>
+                </select>
+            </div>
         </div>
     </div>
-
-
-    <!-- <div style="max-height: 400px" class='py-5'> -->
+    
     <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto h-[400px]">
             <table class="w-full">
@@ -194,58 +181,13 @@
         </div>
     </div>
 
-    <!-- <p>No users found</p> -->
-    <?php include __DIR__ . '/newProduct.php' ?>
-
-
+    <?php include __DIR__. '/components/orders/orderDetails.php' ?>
 </div>
 
 <script>
-    const handleCloseModal = () => document.getElementById('productModal').classList.add('hidden');
-    document.getElementById('cancelBtn').addEventListener('click', handleCloseModal);
-    document.getElementById('closeModal').addEventListener('click', handleCloseModal);
-    document.getElementById('addProductBtn').addEventListener('click', ()=>{
-        document.getElementById('productModal').classList.remove('hidden');
-    })
-
-    const imageInputs = Array.from(document.getElementsByClassName('imgInput'));
-    const previews = Array.from(document.getElementsByClassName('img-prev'));
-
-    imageInputs.forEach((img, index) => {
-        img.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previews[index].src = e.target.result;
-                    previews[index].style.display = 'block'; // Show the preview image
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    });
-
-    let variantCount = 0;
-
-    document.getElementById('addVariantBtn').addEventListener('click', function () {
-        variantCount++; 
-        const container = document.getElementById('variantsContainer');
-
-        const variantDiv = document.createElement('div');
-        variantDiv.className = 'variant';
-        variantDiv.innerHTML = `
-            <div class="flex gap-5" >
-                <input type="text" name="variantName${variantCount}" placeholder="Name (e.g., Size)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
-                <input type="text" name="variantValue${variantCount}" placeholder="Value (e.g., Medium)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
-                <button type="button" class="delete-variant" onclick="this.parentElement.remove()">Remove</button>
-            </div>
-        `;
-        container.appendChild(variantDiv);
-    });
-
     Array.from(document.getElementsByClassName('edit-btn')).forEach(function(btn) {
         btn.addEventListener('click', ()=>{
-            document.getElementById('productModal').classList.remove('hidden');
+            document.getElementById('orderModal').classList.remove('hidden');
         });
     });
 

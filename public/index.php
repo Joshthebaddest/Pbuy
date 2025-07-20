@@ -1,6 +1,7 @@
 <?php
     // public/index.php
     require_once __DIR__ . '/migrate.php';
+    require_once __DIR__ . '/../config/sessionConfig.php';
 
     $url = trim($_GET['url'] ?? '', '/');
 
@@ -10,10 +11,9 @@ $routes = [
     'home'                     => ['view' => '/../app/pages/web/home.php'],
     'cart'                     => ['view' => '/../app/pages/web/cart.php'],
     'search'                     => ['view' => '/../app/pages/web/search&filter.php'],
-    'vendor/reg'                     => ['view' => '/../app/pages/web/vendorRegistration.php'],
     'dummy'                    => ['view' => '/../app/controllers/getDummyProducts.php'],
-    'products'                 => ['view' => '/../app/pages/web/products.php'],
-    'products/:productId'       => ['view' => '/../app/pages/web/productDetails.php'],
+    'products'                 => ['view' => '/../routes/productRoutes.php'],
+    'products/:productId'       => ['view' => '/../routes/productRoutes.php'],
     'user/dashboard'       => ['view' => '/../app/pages/web/dashboard.php'],
     'vendors'                  => ['view' => '/../app/pages/web/vendors.php'],
     'vendors/:vendorId'          => ['view' => '/../app/pages/web/vendorDetails.php'],
@@ -23,13 +23,16 @@ $routes = [
     'auth/verify-email'              => ['view' => '/../app/views/auth/verify_email.php'],
     'auth/reset-password'              => ['view' => '/../app/views/auth/reset_password.php'],
     'auth/logout'              => ['view' => '/../app/controllers/logoutController.php'],
+    'store/register'              => ['view' => '/../app/pages/web/vendorRegistration.php'],
     'dashboard'                => ['view' => '/../app/pages/dashboard/dashboard.php', 'protected' => true],
-    'dashboard/products'       => ['view' => '/../app/pages/dashboard/products.php', 'protected' => true],
-    'dashboard/products/:product'       => ['view' => '/../app/pages/dashboard/addProduct.php', 'protected' => true],
+    'dashboard/products'       => ['view' => '/../routes/productRoutes.php', 'protected' => true],
+    'dashboard/products/:productId'       => ['view' => '/../routes/productRoutes.php', 'protected' => true],
     'dashboard/users'          => ['view' => '/../app/pages/dashboard/users.php', 'protected' => true, 'roles' => ['super_admin', 'admin']],
     'dashboard/profile'        => ['view' => '/../app/pages/dashboard/profile.php', 'protected' => true],
-    'dashboard/orders'       => ['view' => '/../app/pages/dashboard/settings.php', 'protected' => true],
+    'dashboard/orders'       => ['view' => '/../routes/orderRoutes.php', 'protected' => true],
+    'dashboard/settings'       => ['view' => '/../routes/settingsRoutes.php', 'protected' => true],
     'dashboard/recommendations'       => ['view' => '/../app/pages/dashboard/settings.php', 'protected' => true],
+    'dashboard/categories'       => ['view' => '/../routes/categoriesRoutes.php', 'protected' => true],
 ];
 
     // Try to match route (static or dynamic)
@@ -43,8 +46,6 @@ $routes = [
 
         if (preg_match($regexPattern, $url, $matches)) {
             $routeMatched = true;
-
-            require_once __DIR__ . '/../config/sessionConfig.php';
 
             // Extract dynamic params
             $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
@@ -65,7 +66,6 @@ $routes = [
                 require_once __DIR__ . '/404.html';
                 break;
             }
-
 
             // Load the view/controller
             require_once __DIR__ . $routeConfig['view'];

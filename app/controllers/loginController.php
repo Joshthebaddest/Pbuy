@@ -1,14 +1,12 @@
 <?php
-    include_once __DIR__ . '/../../config/globalConfig.php';
-    $dir = realpath(__DIR__);
-    include($dir.'/../data.php');
+    require_once __DIR__ . '/../../config/globalConfig.php';
+    require_once __DIR__ .'/../models/users.php';
     $errors = [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userInfo = test_input($_POST["userInfo"]);
         $password = test_input($_POST["password"]);
 
-        include($dir.'/../models/users.php');
         if(empty($_POST["userInfo"] || empty($_POST["password"]))){
             $error = "please enter a valid field";
         }else{
@@ -66,6 +64,8 @@
                     'message' => 'invalid credentials!',
                     'type' => 'error' // success | error | info
                 ];
+                header('Location: '. BASE_PATH . 'auth/login');
+                exit();
             }catch(Exception $e){
                 echo $e->getMessage();
             }
@@ -73,10 +73,7 @@
     }
 
     function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+        return htmlspecialchars(stripslashes(trim($data)));
     }
 
 ?>

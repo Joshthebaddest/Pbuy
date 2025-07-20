@@ -6,13 +6,10 @@
 
         protected static $schema = [
             'id' => ['type' => 'INT', 'auto_increment' => true, 'primary' => true],
-            'firstname' => ['type' => 'VARCHAR(100)', 'required' => true],
-            'lastname' => ['type' => 'VARCHAR(100)', 'required' => true],
+            'fullname' => ['type' => 'VARCHAR(100)', 'required' => true],
             'username' => ['type' => 'VARCHAR(100)', 'required' => true, 'unique' => true],
             'email' => ['type' => 'VARCHAR(255)', 'required' => true, 'unique' => true],
-            'date_of_birth' => ['type' => 'DATE', 'required' => true],
             'country' => ['type' => 'VARCHAR(100)', 'required' => true],
-            'gender' => ['type' => 'VARCHAR(100)', 'required' => true],
             'password_hash' => ['type' => 'VARCHAR(100)', 'required' => true],
             'profileImg' => ['type' => 'VARCHAR(255)'],
             'role' => ['type' => 'ENUM("super_admin", "user", "admin", "vendor")', 'default' => '"user"'],
@@ -39,21 +36,5 @@
         ];
     }
 
-    class PasswordResetTokens extends Model {
-        protected static $table = 'password_reset_tokens';
 
-        protected static $schema = [
-            'id' => ['type' => 'INT', 'auto_increment' => true, 'primary' => true],
-            'user_email' => ['type' => 'VARCHAR(255)', 'required' => true],
-            'token_hash' => ['type' => 'VARCHAR(255)', 'required' => true, 'unique' => true],
-            'expires_at' => ['type' => 'DATETIME', 'required' => true],
-            'created_at' => ['type' => 'DATETIME', 'default' => 'CURRENT_TIMESTAMP'],
-        ];
-
-        protected static $rules = [
-            'user_email' => 'string|required',
-            'token_hash' => 'string|required|unique:password_reset_tokens,token_hash',
-            'expires_at' => 'date|required',
-        ];
-    }
 ?>

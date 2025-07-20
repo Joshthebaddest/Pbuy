@@ -1,8 +1,7 @@
 <?php
-  $dir = realpath(__DIR__);
   require_once __DIR__ .'/../../../config/globalConfig.php';
-  require_once __DIR__ . '/../../models/products.php';
-  require_once __DIR__ . '/../../models/product_images.php';
+  require_once __DIR__ . '/../../models/product/products.php';
+  require_once __DIR__ . '/../../models/product/product_images.php';
   require_once __DIR__ . '/../../controllers/cartController.php';
   $productId = htmlspecialchars($_GET['productId']);
   try{

@@ -1,3 +1,8 @@
+<?php 
+    require_once __DIR__ . '/../../models/category.php';
+    $categories = Category::query()->select('*')->get();
+?>
+
 <!-- Product Modal -->
 <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -5,12 +10,12 @@
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add New Product</h3>
-                    <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                    <button id="closeModal" class="text-gray-400 border hover:text-gray-600">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
             </div>
-            <form id="productForm" class="p-6">
+            <form action="/pbuy/public/dashboard/products?action=create" method="POST" id="productForm" class="p-6" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Basic Information -->
                     <div class="space-y-4">
@@ -18,7 +23,7 @@
                         
                         <div>
                             <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                            <input type="text" id="productName" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <input type="text" id="productName" name="product_name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                         </div>
 
                         <div>
@@ -28,14 +33,15 @@
 
                         <div>
                             <label for="productCategory" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-                            <select id="productCategory" name="category" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <select id="productCategory" name="category_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                                 <option value="">Select Category</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Clothing">Clothing</option>
-                                <option value="Home & Garden">Home & Garden</option>
-                                <option value="Sports">Sports</option>
-                                <option value="Books">Books</option>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?= htmlspecialchars($category['id']) ?>">
+                                        <?= htmlspecialchars($category['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
+
                         </div>
 
                         <div>
@@ -75,18 +81,41 @@
                 </div>
 
                 <!-- Images Section -->
-                <div class="mt-6">
+                <div class="mb-10 mt-6">
                     <h4 class="text-md font-semibold text-gray-900 mb-4">Product Images</h4>
-                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                        <i data-lucide="upload" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
-                        <p class="text-gray-600 mb-2">Click to upload images or drag and drop</p>
-                        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                        <input type="file" id="productImages" multiple accept="image/*" class="hidden">
-                        <button type="button" onclick="document.getElementById('productImages').click()" class="mt-4 bg-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                            Choose Files
-                        </button>
+                    <div class="flex">    
+                        <?php foreach(range(0, 4) as $num):?> 
+                            <div class="relative w-36 h-36 mr-5">
+                                <!-- Profile Image -->
+                                <img
+                                    id="profileImg"
+                                    src="<?= !empty($images['img_url_'.$num]) ? $images['img_url_'.$num] : 'https://placehold.co/300x200?text=Upload+Image' ?>"
+                                    alt=""
+                                    class="img-prev w-full h-full object-cover border border-gray-300"
+                                />
+                                <?php if (!empty($errors['img_url_'.$num])): ?>
+                                    <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["img_url_".$num]) ?></span>
+                                <?php endif; ?>
+
+                                <!-- Overlay -->
+                                <label for="fileInput_<?= $num ?>" class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
+                                    <svg class="w-6 h-6 text-white mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A2 2 0 0122 9.618V18a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5l2-2h4l2 2h5a2 2 0 012 2v3.618a2 2 0 01-2.447 1.894L15 10z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15l-4-4m0 0l4-4m-4 4h16" />
+                                    </svg>
+                                    <span class="text-white text-xs font-semibold">Add Photo</span>
+                                </label>
+
+                                <input type="file" class="hidden imgInput" id="fileInput_<?= $num ?>" name="img_url_<?= $num ?>" accept="image/*">
+                    
+                                <!-- Hidden field to retain existing image URL if no new file is selected -->
+                                <input type="hidden" name="img_url_<?= $num ?>" value="<?= !empty($images['img_url_'.$num]) ? htmlspecialchars($images['img_url_'.$num]) : '' ?>">
+                            </div>
+                        <?php endforeach ;?>
+                        <?php if (!empty($errors['images'])): ?>
+                            <span class="text-red-600 text-xs"><?= htmlspecialchars($errors["images"]) ?></span>
+                        <?php endif; ?>
                     </div>
-                    <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
                 </div>
 
                 <!-- Variants Section -->

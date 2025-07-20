@@ -5,17 +5,14 @@
     $errors = [];
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $firstname = test_input($_POST["firstname"]);
-        $lastname = test_input($_POST["lastname"]);
+        $fullname = test_input($_POST["fullname"]);
         $username = test_input($_POST["username"]);
         $email = test_input($_POST["email"]);
         $country = test_input($_POST["country"]);
-        $gender = test_input($_POST["gender"]);
-        $dateOfBirth = test_input($_POST["dob"]);
         $password = test_input($_POST["password"]);
         $confirmPassword = test_input($_POST["confirm_password"]);
 
-        validate_form($firstname, $lastname, $username, $email, $country, $gender, $dateOfBirth, $password, $confirmPassword);
+        validate_form($fullname, $username, $email, $country, $password, $confirmPassword);
 
         if (empty($errors)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -27,13 +24,10 @@
 
             try {
                 User::create([
-                    'firstname' => $firstname,
-                    'lastname' => $lastname,
+                    'fullname' => $fullname,
                     'username' => $username,
                     'email' => $email,
                     'country' => $country,
-                    'gender' => $gender,
-                    'date_of_birth' => $dateOfBirth,
                     'password_hash' => $hashed_password,
                     'email_verification_token' => $tokenHash,
                     'email_verification_expires' => $expires_at
@@ -48,24 +42,16 @@
     }
 
     function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+        return htmlspecialchars(stripslashes(trim($data)));
     }
 
-    function validate_form($firstname, $lastname, $username, $email, $country, $gender, $dateOfBirth, $password, $confirmPassword) {
+    function validate_form($fullname, $username, $email, $country, $password, $confirmPassword) {
         global $errors;
 
-        if (empty($firstname)) {
-            $errors["firstname"] = "First Name is required";
-        } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $firstname)) {
-            $errors["firstname"] = "Only letters and white space allowed";
-        }
-        if (empty($lastname)) {
-            $errors["lastname"] = "Last Name is required";
-        } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $lastname)) {
-            $errors["lastname"] = "Only letters and white space allowed";
+        if (empty($fullname)) {
+            $errors["fullname"] = "Full Name is required";
+        } elseif (!preg_match("/^[a-zA-Z-' ]*$/", $fullname)) {
+            $errors["fullname"] = "Only letters and white space allowed";
         }
         if (empty($username)) {
             $errors["username"] = "Username is required";
@@ -81,13 +67,6 @@
 
         if (empty($country)) {
             $errors["country"] = "Country is required";
-        }
-
-        if (empty($gender)) {
-            $errors["gender"] = "Gender is required";
-        }
-        if (empty($dateOfBirth)) {
-            $errors["dob"] = "Date of Birth is required";
         }
 
         if (empty($password)) {

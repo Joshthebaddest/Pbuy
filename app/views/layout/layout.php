@@ -48,15 +48,16 @@
             }
         </script>
         <script src="<?= BASE_PATH ?>js/homepage.js"></script>
-        <script src="<?= BASE_PATH ?>js/dashboard.js"></script>
+        <!-- <script src="<?= BASE_PATH ?>js/dashboard.js"></script>
         <script src="<?= BASE_PATH ?>js/productDetails.js"></script>
         <script src="<?= BASE_PATH ?>js/search&filter.js"></script>
-        <script src="<?= BASE_PATH ?>js/vendorReg.js"></script>
-        <!-- <link rel="stylesheet" href="<?= BASE_PATH ?>css/style.css"> -->
+        <script src="<?= BASE_PATH ?>js/vendorReg.js"></script> -->
+        <link rel="stylesheet" href="<?= BASE_PATH ?>css/style.css">
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
         <link rel="stylesheet" href="/css/web.css">
         <link rel="stylesheet" href="/css/vendorReg.css">
+        <link rel="stylesheet" href="/css/custom.css">
         <!-- <link rel="stylesheet" href="/css/style.css"> -->
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <!-- Development version -->

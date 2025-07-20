@@ -41,103 +41,105 @@
             "status" => 'error'
         ]
     ];
+
+    $adminStats = [
+        [
+            'title' => 'Monthly Revenew',
+            'icon' => 'wallet',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'green'
+        ],
+        [
+            'title' => 'Total Users',
+            'icon' => 'users',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'blue'
+        ],
+        [
+            'title' => 'Total Vendors',
+            'icon' => 'building-2',
+            'value' => '10',
+            'percentage' => '25',
+            'color' => 'orange'
+        ],
+        [
+            'title' => 'Total Products',
+            'icon' => 'package',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'indigo'
+        ]
+    ]; 
+
+    $vendorStats = [
+        [
+            'title' => 'Total Earnings',
+            'icon' => 'wallet',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'green'
+        ],
+        [
+            'title' => 'Total Sales',
+            'icon' => 'dollar-sign',
+            'value' => '400',
+            'percentage' => '20',
+            'color' =>'yellow'
+        ],
+        [
+            'title' => 'Total Orders',
+            'icon' => 'shopping-cart',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'red'
+        ],
+        [
+            'title' => 'Products',
+            'icon' => 'package',
+            'value' => '400',
+            'percentage' => '20',
+            'color' => 'indigo'
+        ]
+    ];
+    $stats = $_SESSION['role'] === 'vendor' ? $vendorStats : $adminStats;
 ?>
 
 <div>
     <h3 class="text-center font-bold text-3xl">Dashboard</h3>
 
     <div class="flex gap-5 flex-wrap py-10">
-        <div style="width: 250px" class='shadow-md border rounded-xl p-5 bg-white'>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class='font-semibold text-sm'>Total Earnings</p>
+        <?php foreach ($stats as $stat) : ?>
+            <div style="width:195px" class='shadow-md border rounded-xl p-5 bg-white'>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class='font-semibold text-sm'><?php echo $stat['title']; ?></p>
+                    </div>
+                    <div class="p-3 bg-<?= $stat['color']; ?>-50 rounded-lg">
+                        <i class="w-6 h-6 text-<?= $stat['color']; ?>-600" data-lucide="<?php echo $stat['icon']; ?>"></i>
+                    </div>
                 </div>
-                <div class="p-3 bg-pink-50 rounded-lg">
-                    <i class="w-6 h-6 text-pink-600" data-lucide="wallet"></i>
+                <div class='text-xl  font-bold'>
+                    <p>$<?php echo $stat['value']; ?></p>
                 </div>
-            </div>
-            <div class='text-xl  font-bold'>
-                <p>$400</p>
-            </div>
-            <div class="mt-3 text-xs text-gray-500">
-                <span class="text-green-600">20%</span> vs last month
-            </div>
-        </div>
-        
-        <div style="width: 250px" class='shadow-md border rounded-xl p-5 bg-white'>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class='font-semibold text-sm'>Total Users</p>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg">
-                    <i class="w-6 h-6 text-green-600" data-lucide="users"></i>
+                <div class="mt-3 text-xs text-gray-500">
+                    <span class="text-green-600"><?php echo $stat['percentage']; ?>%</span> vs last month
                 </div>
             </div>
-            <div class='text-xl  font-bold'>
-                <p>4</p>
-            </div>
-            <div class="mt-3 text-xs text-gray-500">
-                <span class="text-green-600">2%</span> vs last month
-            </div>
-        </div>
-        <div style="width: 250px" class='shadow-md border rounded-xl p-5 bg-white'>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class='font-semibold text-sm'>Total Products</p>
-                </div>
-                <div class="p-3 bg-indigo-50 rounded-lg">
-                    <i class="w-6 h-6 text-indigo-600" data-lucide="package"></i>
-                </div>
-            </div>
-            <div class='text-xl  font-bold'>
-                <p>20</p>
-            </div>
-            <div class="mt-3 text-xs text-gray-500">
-                <span class="text-green-600">45%</span> vs last month
-            </div>
-        </div>
-        <div style="width: 250px" class='shadow-md border rounded-xl p-5 bg-white'>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class='font-semibold text-sm'>Total Orders</p>
-                </div>
-                <div class="p-3 bg-red-50 rounded-lg">
-                    <i class="w-6 h-6 text-red-600" data-lucide="shopping-cart"></i>
-                </div>
-            </div>
-            <div class='text-xl  font-bold'>
-                <p>3</p>
-            </div>
-            <div class="mt-3 text-xs text-gray-500">
-                <span class="text-green-600">15%</span> vs last month
-            </div>
-        </div>
-        <div style="width: 250px" class='shadow-md border rounded-xl p-5 bg-white'>
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class='font-semibold text-sm'>Total Vendors</p>
-                </div>
-                <div class="p-3 bg-blue-50 rounded-lg">
-                    <i class="w-6 h-6 text-blue-600" data-lucide="users-round"></i>
-                </div>
-            </div>
-            <div class='text-xl  font-bold'>
-                <p>3</p>
-            </div>
-            <div class="mt-3 text-xs text-gray-500">
-                <span class="text-green-600">15%</span> vs last month
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 
     <div class='py-10 space-y-5 text-white'>
-        <a href="users" class="flex gap-2 items-center bg-gray-800 rounded-lg w-48 p-2 px-5">
-            <i class="w-5 h-5 text-white" data-lucide="external-link"></i>
-            View Users
-        </a>
+        <?php if($_SESSION['role'] !== 'vendor'): ?>
+            <a href="<?= BASE_PATH ?>dashboard/users" class="flex gap-2 items-center bg-gradient-to-br from-orange-500 to-orange-600 text-gray-200 font-semibold rounded-lg w-48 p-2 px-5">
+                <i class="w-5 h-5 text-gray-200" data-lucide="external-link"></i>
+                View Users
+            </a>
+        <?php endif; ?>
 
-        <a href="products" class="flex gap-2 items-center bg-gray-800 rounded-lg w-48 p-2 px-5">
-            <i class="w-5 h-5 text-white" data-lucide="external-link"></i>
+        <a href="<?= BASE_PATH ?>dashboard/products" class="flex gap-2 items-center <?= $_SESSION['role'] === "vendor" ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-gray-200' : 'bg-gray-300 text-gray-800' ?> font-semibold rounded-lg w-48 p-2 px-5">
+            <i class="w-5 h-5 <?= $_SESSION['role'] === "vendor" ? 'text-gray-200' : 'text-gray-800' ?>" data-lucide="external-link"></i>
             View Products
         </a>
     </div>

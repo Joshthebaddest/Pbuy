@@ -23,7 +23,7 @@
             <!-- Right Side: Links -->
             <div class="hidden md:flex items-center space-x-4">
                 <a href="/help" class="hover:text-gray-300">Customer Service</a>
-                <a href="/sell" class="hover:text-gray-300">Sell on MarketPlace</a>
+                <a href="<?php echo BASE_PATH; ?>store/register" class="hover:text-gray-300">Sell on MarketPlace</a>
                 <a href="/track" class="hover:text-gray-300">Track Your Order</a>
             </div>
             </div>
@@ -36,7 +36,7 @@
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
           <div class="flex-shrink-0">
-            <a href="/" class="flex items-center space-x-2">
+            <a href="<?php echo BASE_PATH; ?>" class="flex items-center space-x-2">
               <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
               </div>
@@ -84,24 +84,28 @@
             <!-- User Menu -->
             <div class="relative">
               <button href="profile.html" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors" id="userMenuButton">
-                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <i data-lucide="user" class="h-5 w-5 text-white"></i>
+                <div class="w-8 h-8 <?php echo isset($_SESSION['user']) ? 'bg-primary' : 'bg-gray-300'; ?> rounded-full flex items-center justify-center">
+                  <i data-lucide="user" class="h-5 w-5 <?php echo isset($_SESSION['user']) ? 'text-white' : 'text-gray-400'; ?>"></i>
                 </div>
-                <span class="hidden md:block text-sm font-medium">John Doe</span>
-                <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                <?php if(isset($_SESSION['user'])): ?>
+                  <span class="hidden md:block text-sm font-medium"><?php echo $_SESSION['user']; ?></span>
+                <?php endif; ?>
+                <i data-lucide="chevron-down" class="h-4 w-4 <?php echo isset($_SESSION['user']) ? 'text-gray-400' : ''; ?>"></i>
               </button>
               
               <!-- Dropdown Menu -->
               <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden" id="userDropdown">
                 <div class="py-1">
-                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
-                    <i data-lucide="log-in" class="w-4 h-4 inline mr-2"></i>
-                    Login
-                  </a>
-                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
-                    <i data-lucide="user-plus" class="w-4 h-4 inline mr-2"></i>
+                  <?php if(!isset($_SESSION['user'])): ?>
+                    <a href="<?php echo BASE_PATH; ?>auth/login" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                      <i data-lucide="log-in" class="w-4 h-4 inline mr-2"></i>
+                      Login
+                    </a>
+                    <a href="<?php echo BASE_PATH; ?>auth/signup" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
+                      <i data-lucide="user-plus" class="w-4 h-4 inline mr-2"></i>
                     Sign Up
                   </a>
+                  <?php endif; ?>
                   <hr class="my-1">
                   <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 inline mr-2"></i>
@@ -116,17 +120,18 @@
                     Settings
                   </a>
                   <hr class="my-1">
-                  <a href="#" class="block px-4 py-2 text-sm text-text hover:bg-gray-50 transition-colors duration-200">
-                    <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>
-                    Logout
-                  </a>
+                  <?php if(isset($_SESSION['user'])): ?>
+                    <a href="<?php echo BASE_PATH; ?>auth/logout" class="block px-4 py-2 text-sm text-text hover:bg-red-500 hover:text-gray-100 transition-colors duration-200">
+                      <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>
+                      Logout
+                    </a>
+                  <?php endif; ?>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <?php 
- ?>
+        
         <?php
           $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
           if($path === BASE_PATH): 
@@ -260,7 +265,7 @@
               <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">About Us</a></li>
               <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Contact</a></li>
               <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">FAQ</a></li>
-              <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Become a Vendor</a></li>
+              <li><a href="<?php echo BASE_PATH; ?>store/register" class="text-gray-600 hover:text-primary transition-colors duration-200">Become a Vendor</a></li>
               <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">Affiliate Program</a></li>
             </ul>
           </div>

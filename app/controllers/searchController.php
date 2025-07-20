@@ -1,6 +1,6 @@
 <?php
     require_once __DIR__ .'/../../config/globalConfig.php';
-    require_once __DIR__ . '/../models/products.php';
+    require_once __DIR__ . '/../models/product/products.php';
     require_once __DIR__ . '/../models/users.php';
     if(isset($_GET['search'])){
         try{
